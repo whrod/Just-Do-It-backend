@@ -1,4 +1,4 @@
-const database = require('./data-source');
+const database = require('./dataSource');
 
 // const signUp = async () => {
 //     await database.query(
