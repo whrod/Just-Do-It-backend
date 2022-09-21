@@ -1,13 +1,7 @@
 const database = require('./dataSource');
 
-// const signUp = async () => {
-//     await database.query(
-
-//     )
-// }
-
 const getUserByUsername = async (username) => {
-    await database.query(
+    const [user] = await database.query(
         `SELECT
             id,
             username,
@@ -18,13 +12,13 @@ const getUserByUsername = async (username) => {
             gender,
             birth
         FROM users
-        WHERE = ?
+        WHERE username = ?
         `,
         [username]
     )
+    return user;
 }
 
 module.exports = {
-    // signUp,
-    getUserByUsername
+    getUserByUsername,
 }
