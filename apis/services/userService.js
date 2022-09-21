@@ -3,17 +3,14 @@ const bcyrpt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { validateUsername, validatePassword } = require('../utils/validators')
 
-// const signUp = async () => {
-
-// }
-
 const signIn = async (username, password) => {
 
     validateUsername(username);
     validatePassword(password);
 
-    const user = await.userDao.getUserByUsername();
+    const user = await userDao.getUserByUsername(username);
     const passwordMatch = await bcyrpt.compare(password, user.password)
+    console.log(passwordMatch)
 
     if(!passwordMatch) {
         const error = new Error('WRONG_PASSWORD')
@@ -31,6 +28,5 @@ const signIn = async (username, password) => {
 };
 
 module.exports = {
-    // signUp,
     signIn,
 }
