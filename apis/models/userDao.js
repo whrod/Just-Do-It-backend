@@ -2,7 +2,8 @@ const database = require('./dataSource');
 
 const getUserByUsername = async (username) => {
   const [user] = await database.query(
-    `SELECT
+    `
+    SELECT
             id,
             username,
             fullname,
@@ -16,14 +17,27 @@ const getUserByUsername = async (username) => {
         `,
     [username]
   );
-  if (user === undefined) {
-    const error = new Error('USER_NOT_FOUND');
-    error.statusCode = 400;
-    throw error;
-  }
+  return user;
+};
+
+const getUserById = async (id) => {
+  const [user] = await database.query(
+    `
+    SELECT
+            id,
+            username,
+            fullname,
+            phone_number,
+            address
+    FROM users
+    WHERE id = ?
+    `,
+    [id]
+  );
   return user;
 };
 
 module.exports = {
   getUserByUsername,
+  getUserById,
 };

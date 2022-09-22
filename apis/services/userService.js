@@ -4,6 +4,14 @@ const jwt = require('jsonwebtoken');
 
 const signIn = async (username, password) => {
   const user = await userDao.getUserByUsername(username);
+
+  if (user === undefined) {
+    const error = new Error('USER_NOT_FOUND');
+    error.statusCode = 400;
+
+    throw error;
+  }
+
   const passwordMatch = await bcyrpt.compare(password, user.password);
 
   if (!passwordMatch) {
@@ -19,6 +27,11 @@ const signIn = async (username, password) => {
   }));
 };
 
+const getUserById = async (id) => {
+  return await userDao.getUserById(id);
+};
+
 module.exports = {
   signIn,
+  getUserById,
 };
