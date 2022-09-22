@@ -15,12 +15,10 @@ app.use(express.json());
 app.use(routes);
 
 app.all('*', (req, res, next) => {
-  const err = new Error(`Can't fine ${req.originalUrl} on this server!`);
+  const error = new Error(`Can't fine ${req.originalUrl} on this server!`);
+  error.statusCode = 404;
 
-  err.statusCode = 404;
-
-  res.status(statusCode).send();
-  next(err);
+  next(error);
 });
 app.use(globalErrorHandler);
 

@@ -1,7 +1,6 @@
 const { userDao } = require('../models');
 const bcyrpt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { validateUsername, validatePassword } = require('../utils/validators');
 
 const signIn = async (username, password) => {
   const user = await userDao.getUserByUsername(username);
