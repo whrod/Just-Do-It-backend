@@ -11,7 +11,6 @@ const signIn = catchAsync(async (req, res) => {
   }
 
   const accessToken = await userService.signIn(username, password);
-
   res.status(200).send({ accessToken: accessToken });
 });
 
