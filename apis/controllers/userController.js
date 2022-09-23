@@ -1,17 +1,24 @@
-const { userSerive } = require('../services')
+const { userService } = require('../services')
 
-// const signUp = async() => {
-// }
+const signUp = async (req, res) => {
 
-// const signIn = async() => {
-// }
-
-const getPing = async (req, res) => {
-    await res.status(200).send({message : "pong"});
+    try {
+        const { userName, password, fullName, phoneNumber, address, birth, gender } = req.body
+        console.log(userName, password, fullName, phoneNumber, address, birth, gender)
+        if (!userName || !password || !fullName || !phoneNumber || !address || !birth || !gender) {
+            const err = new Error("KEY_ERRROR");
+            err.statusCode = 400;
+            throw err
+        }
+        await userService.signUp(userName, password, fullName, phoneNumber, address, birth, gender);
+        return res.status(201).json({ message: "userCreated" });
+    }
+    catch (err) {
+        res.status(err.statusCode || 580).json({ message: err.message });
+    }
 }
 
 module.exports = {
-    // signUp,
-    // signIn,
-    getPing
+    signUp,
+
 }
