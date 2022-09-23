@@ -7,9 +7,6 @@ const getCart = catchAsync(async (req, res) => {
 
   res.status(200).send({ result });
 });
-// postCart;
-// patchCart;
-// deleteCart;
 
 module.exports = {
   getCart,

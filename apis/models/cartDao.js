@@ -1,5 +1,4 @@
 const database = require('../models/dataSource');
-const { cartService } = require('../services');
 
 const getCartById = async (userId) => {
   const cart = await database.query(
@@ -28,13 +27,3 @@ const getCartById = async (userId) => {
 module.exports = {
   getCartById,
 };
-
-/*
-userId
-productName
-quantity
-size
-retailPrice
-discountPrice
-thumbnail
-styleCode*/
