@@ -4,14 +4,14 @@ const getUserByUsername = async (username) => {
   const [user] = await database.query(
     `
     SELECT
-            id,
-            username,
-            fullname,
-            password,
-            phone_number,
-            address,
-            gender,
-            birth
+        id,
+        username,
+        fullname,
+        password,
+        phone_number,
+        address,
+        gender,
+        birth
     FROM users
     WHERE username = ?
         `,
@@ -24,11 +24,11 @@ const getUserById = async (id) => {
   const [user] = await database.query(
     `
     SELECT
-            id,
-            username,
-            fullname,
-            phone_number,
-            address
+        id,
+        username,
+        fullname,
+        phone_number,
+        address
     FROM users
     WHERE id = ?
     `,
