@@ -12,7 +12,9 @@ const getCartById = async (userId) => {
         o.stock,
         p.style_code AS styleCode,
         p.discount_price AS discountPrice,
-        p.thumbnail
+        p.thumbnail,
+        p.id AS productId,
+        s.id AS sizeId
     FROM carts c, product_options o, products p, sizes s
     WHERE c.product_option_id = o.id
     AND o.product_id = p.id 
