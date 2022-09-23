@@ -26,6 +26,52 @@ const getCartById = async (userId) => {
   return cart;
 };
 
+const getProductOption = async (productId, sizeId) => {
+  const [productOption] = await database.query(
+    `SELECT
+        id,
+        product_id,
+        stock
+    FROM product_options 
+    WHERE 
+        product_id = ?
+    AND 
+        size_id = ?
+    `,
+    [productId, sizeId]
+  );
+  return productOption;
+};
+
+const postCart = async (productOption, userId, quantity) => {
+  const result = await database.query(
+    `
+    INSERT INTO carts 
+    (
+        product_option_id,
+        user_id,
+        quantity
+    ) VALUE (
+      ?, ?, ?
+    )
+    `,
+    [productOption, userId, quantity]
+  );
+
+  if (result.affectedRows !== 1) {
+    const error = new Error('WRONG_INPUT_REQUEST');
+    error.statusCode = 400;
+
+    throw error;
+  }
+  return result;
+};
+
+//Service에서 확인한 stock이 있을 경우
+//product_options 생성 후
+//carts 생성
 module.exports = {
   getCartById,
+  getProductOption,
+  postCart,
 };
