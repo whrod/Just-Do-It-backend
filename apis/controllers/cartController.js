@@ -1,12 +1,12 @@
 const { cartService } = require('../services');
+const { catchAsync } = require('../utils/error');
 
-const getCart = async (req, res) => {
-  // const userId = req.user.id;
-  const { userId } = req.params;
+const getCart = catchAsync(async (req, res) => {
+  const userId = req.user.id;
   const result = await cartService.getCart(userId);
 
   res.status(200).send({ result });
-};
+});
 // postCart;
 // patchCart;
 // deleteCart;
