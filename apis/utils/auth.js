@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { userService } = require('../services');
 const { catchAsync } = require('./error');
 
-const loginRequired = async (req, res, next) => {
+const loginRequired = catchAsync(async (req, res, next) => {
   const accessToken = req.headers.authorization;
 
   if (!accessToken) {
@@ -23,7 +23,7 @@ const loginRequired = async (req, res, next) => {
 
   req.user = user;
   next();
-};
+});
 
 module.exports = {
   loginRequired,

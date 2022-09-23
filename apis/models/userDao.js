@@ -1,12 +1,12 @@
 const database = require('./dataSource');
 
-const getUserByUsername = async (username) => {
+const getUserByUsername = async (userName) => {
   const [user] = await database.query(
     `
     SELECT
         id,
-        username,
-        fullname,
+        username AS userName,
+        fullname AS fullName,
         password,
         phone_number,
         address,
@@ -15,7 +15,7 @@ const getUserByUsername = async (username) => {
     FROM users
     WHERE username = ?
         `,
-    [username]
+    [userName]
   );
   return user;
 };

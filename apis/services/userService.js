@@ -2,8 +2,8 @@ const { userDao } = require('../models');
 const bcyrpt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const signIn = async (username, password) => {
-  const user = await userDao.getUserByUsername(username);
+const signIn = async (userName, password) => {
+  const user = await userDao.getUserByUsername(userName);
 
   if (user === undefined) {
     const error = new Error('INVALID_USER');
