@@ -15,7 +15,7 @@ const loginRequired = async (req, res, next) => {
   const user = await userService.getUserById(verifyToken.id);
 
   if (!user) {
-    const error = new Error('USER_DOES_NOT_EXIST');
+    const error = new Error('INVALID_USER');
     error.statusCode = 400;
 
     throw error;
