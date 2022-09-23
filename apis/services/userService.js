@@ -6,7 +6,7 @@ const signIn = async (username, password) => {
   const user = await userDao.getUserByUsername(username);
 
   if (user === undefined) {
-    const error = new Error('USER_NOT_FOUND');
+    const error = new Error('INVALID_USER');
     error.statusCode = 400;
 
     throw error;
