@@ -15,7 +15,7 @@ const getCartById = async (userId) => {
         p.thumbnail,
         p.id AS productId,
         s.id AS sizeId
-    FROM carts c, product_options o, products p, sizes s
+    FROM carts c,       product_options o, products p, sizes s
     WHERE c.product_option_id = o.id
     AND o.product_id = p.id 
     AND o.size_id = s.id 
@@ -43,7 +43,7 @@ const getProductOption = async (productId, sizeId) => {
   return productOption;
 };
 
-const postCart = async (productOption, userId, quantity) => {
+const postCart = async (productOptionId, userId, quantity) => {
   const result = await database.query(
     `
     INSERT INTO carts 
@@ -55,7 +55,7 @@ const postCart = async (productOption, userId, quantity) => {
       ?, ?, ?
     )
     `,
-    [productOption, userId, quantity]
+    [productOptionId, userId, quantity]
   );
 
   if (result.affectedRows !== 1) {
@@ -67,9 +67,6 @@ const postCart = async (productOption, userId, quantity) => {
   return result;
 };
 
-//Service에서 확인한 stock이 있을 경우
-//product_options 생성 후
-//carts 생성
 module.exports = {
   getCartById,
   getProductOption,
