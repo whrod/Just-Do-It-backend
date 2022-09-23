@@ -9,6 +9,7 @@ const database = new DataSource({
   database: process.env.TYPEORM_DATABASE,
 })
 
+
 database
   .initialize()
   .then(() => {
@@ -17,5 +18,6 @@ database
   .catch((error) => {
     console.error('Error during Data Source initialization', error);
   });
+
 
 module.exports = database;
