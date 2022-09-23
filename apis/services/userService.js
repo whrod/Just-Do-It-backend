@@ -5,14 +5,15 @@ const jwt = require('jsonwebtoken');
 
 const signUp = async (userName, password, fullName, phoneNumber, address, birth, gender) => {
 
-
     const today = new Date();
     const todayTime = today.getTime();
     const birthTime = new Date(birth);
+    const limitAge = 15;
+
     let age = Math.floor((todayTime - birthTime) / (1000 * 60 * 60 * 24 * 365));
-    if (age < 15) {
-        const err = new Error("만 14세 이하는 회원가입 불가")
-        err.statusCode = 401;
+    if (age < limitAge) {
+        const err = new Error(`Under ${limitAge} years old`)
+        err.statusCode = 400;
         throw err
     }
     const idValidation = new RegExp(
@@ -20,7 +21,7 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
     );
     if (!idValidation.test(userName)) {
         const err = new Error(`ID_IS_NOT_VALID`);
-        err.statusCode = 402;
+        err.statusCode = 400;
         throw err;
     };
 
@@ -29,7 +30,7 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
     );
     if (!pwValidation.test(password)) {
         const err = new Error(`PASSWORD_IS_NOT_VALID`);
-        err.statusCode = 403;
+        err.statusCode = 400;
         throw err;
     };
 
@@ -39,14 +40,14 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
     );
     if (!mobileValidation.test(phoneNumber)) {
         const err = new Error(`MOBILE_IS_NO_VALID`);
-        err.statusCode = 404;
+        err.statusCode = 400;
         throw err;
     }
 
     const checkUsername = await userDao.checkUsername(userName)
     if (checkUsername) {
         const err = new Error("already exists userid");
-        err.statusCode = 405;
+        err.statusCode = 400;
         throw err
     }
 

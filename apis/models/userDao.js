@@ -5,7 +5,7 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
         return await database.query(
             `INSERT INTO users(
                 username,
-                password ,
+                password,
                 fullname,
                 phone_number,
                 address,
@@ -17,21 +17,20 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
         );
     }
     catch (err) {
-        const error = new Error('INVALID_DAATA_INPUT');
-        error.statusCode = 530;
+        const error = new Error('INVALID_DATA_INPUT');
+        error.statusCode = 500;
         throw error;
     }
 }
 
 const checkUsername = async (userName) => {
     try {
-        console.log(userName)
         const [user] = await database.query(
             `SELECT 
-                *
+            username
             FROM users
-            where username = ?`
-            , [userName]
+            where username = ?
+            `, [userName]
         );
         return user;
     }
@@ -46,8 +45,7 @@ const checkUsername = async (userName) => {
 
 const getUserByUsername = async (username) => {
     const [user] = await database.query(
-        `
-    SELECT
+        `SELECT
         id,
         username,
         fullname,
@@ -58,16 +56,14 @@ const getUserByUsername = async (username) => {
         birth
     FROM users
     WHERE username = ?
-        `,
-        [username]
+        `, [username]
     );
     return user;
 };
 
 const getUserById = async (id) => {
     const [user] = await database.query(
-        `
-    SELECT
+        `SELECT
         id,
         username,
         fullname,
@@ -75,8 +71,7 @@ const getUserById = async (id) => {
         address
     FROM users
     WHERE id = ?
-    `,
-        [id]
+    `, [id]
     );
     return user;
 };
