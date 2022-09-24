@@ -15,11 +15,23 @@ const postCart = catchAsync(async (req, res) => {
   await cartService.postCart(productId, sizeId, userId, quantity);
 
   res
-    .status(200)
+    .status(201)
     .send({ message: `Product ${productId} was added to ${userId}'s cart` });
 });
+
+const updateCart = async (req, res) => {
+  const userId = req.user.id;
+  const { cartId, productId, sizeId, quantity } = req.body;
+
+  await cartService.updateCart(cartId, productId, sizeId, userId, quantity);
+  //
+  console.log(userId);
+  //
+  res.status(201).send({ message: `updated ${userId}'s cart` });
+};
 
 module.exports = {
   getCart,
   postCart,
+  updateCart,
 };

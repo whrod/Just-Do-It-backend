@@ -67,8 +67,43 @@ const postCart = async (productOptionId, userId, quantity) => {
   return result;
 };
 
+// const checkCartUser = async (userId) => {
+//   const result = database.query(
+//     `
+//     SELECT
+//       id AS cartId
+//     FROM carts
+//     WHERE
+//       user_id = ?
+//     `,
+//     [userId]
+//   );
+//   return result;
+// };
+
+const updateCart = async (productOptionId, userId, quantity, cartId) => {
+  const result = await database.query(
+    `
+    UPDATE
+        carts
+    SET
+        product_option_id = ?,
+        quantity = ?
+    WHERE
+        user_id = ?
+    AND
+        id = ?
+    `,
+    [productOptionId, quantity, userId, cartId]
+  );
+  console.log(result);
+  return result;
+};
+
 module.exports = {
   getCartById,
   getProductOption,
   postCart,
+  // checkCartUser,
+  updateCart,
 };
