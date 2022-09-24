@@ -43,7 +43,7 @@ const getProductOption = async (productOptionId) => {
 };
 
 //productId, sizeId로 productOption구할떄 장바구니 옵션변경에서 필요?
-const getProductOptionBySize = async (productId, sizeId) => {
+const getProductOptionBySelect = async (productId, sizeId) => {
   const [productOption] = await database.query(
     `SELECT
         id,
@@ -83,19 +83,6 @@ const postCart = async (productOptionId, userId, quantity) => {
   }
   return result;
 };
-// const checkCartUser = async (userId) => {
-//   const result = database.query(
-//     `
-//     SELECT
-//       id AS cartId
-//     FROM carts
-//     WHERE
-//       user_id = ?
-//     `,
-//     [userId]
-//   );
-//   return result;
-// };
 
 const updateCart = async (productOptionId, userId, quantity, cartId) => {
   const result = await database.query(
@@ -112,14 +99,33 @@ const updateCart = async (productOptionId, userId, quantity, cartId) => {
     `,
     [productOptionId, quantity, userId, cartId]
   );
-  console.log(result);
+  if (result.affectedRows !== 1) {
+    const error = new Error('WROND_INPUT_REQUEST');
+    error.statusCode = 400;
+
+    throw error;
+  }
   return result;
 };
+
+// const checkCartUser = async (userId) => {
+//   const result = database.query(
+//     `
+//     SELECT
+//       id AS cartId
+//     FROM carts
+//     WHERE
+//       user_id = ?
+//     `,
+//     [userId]
+//   );
+//   return result;
+// };
 
 module.exports = {
   getCartById,
   getProductOption,
-  getProductOptionBySize,
+  getProductOptionBySelect,
   postCart,
   updateCart,
 };

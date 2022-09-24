@@ -10,7 +10,6 @@ const getCart = catchAsync(async (req, res) => {
 
 const postCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  console.log(userId);
   const { productId, productOptionId, quantity } = req.body;
 
   await cartService.postCart(productOptionId, quantity, userId);
@@ -25,9 +24,7 @@ const updateCart = async (req, res) => {
   const { cartId, productId, sizeId, quantity } = req.body;
 
   await cartService.updateCart(cartId, productId, sizeId, userId, quantity);
-  //
-  console.log(userId);
-  //
+
   res.status(201).send({ message: `updated ${userId}'s cart` });
 };
 
