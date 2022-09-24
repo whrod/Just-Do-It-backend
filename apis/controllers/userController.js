@@ -10,8 +10,11 @@ const signIn = catchAsync(async (req, res) => {
     throw error;
   }
 
-  const accessToken = await userService.signIn(userName, password);
-  res.status(200).send({ accessToken: accessToken });
+  const loggedInUser = await userService.signIn(userName, password);
+
+  res
+    .status(200)
+    .send({ fullName: loggedInUser[0], accessToken: loggedInUser[1] });
 });
 
 const getPing = async (req, res) => {
