@@ -25,8 +25,25 @@ const getCartById = async (userId) => {
   );
   return cart;
 };
+//productOptionId로 stock 구할때
+const getProductOption = async (productOptionId) => {
+  const productOption = await database.query(
+    `
+    SELECT
+        product_id,
+        size_id,
+        color_id,
+        stock
+    FROM product_options   
+    WHERE id = ?    
+    `,
+    [productOptionId]
+  );
+  return productOption;
+};
 
-const getProductOption = async (productId, sizeId) => {
+//productId, sizeId로 productOption구할떄
+const getProductOptionBySize = async (productId, sizeId) => {
   const [productOption] = await database.query(
     `SELECT
         id,
@@ -103,6 +120,7 @@ const updateCart = async (productOptionId, userId, quantity, cartId) => {
 module.exports = {
   getCartById,
   getProductOption,
+  getProductOptionBySize,
   postCart,
   // checkCartUser,
   updateCart,
