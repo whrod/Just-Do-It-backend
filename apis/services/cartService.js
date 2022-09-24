@@ -11,8 +11,8 @@ const getProductOption = async (productId, sizeId) => {
   return productOption;
 };
 
-const postCart = async (productId, sizeId, userId, quantity) => {
-  const productOption = await getProductOption(productId, sizeId);
+const postCart = async (productOptionId, quantity, userId) => {
+  const productOption = await getProductOption(productOptionId);
 
   if (productOption.stock === 0) {
     const error = new Error('OUT_OF_STOCK');
@@ -26,8 +26,7 @@ const postCart = async (productId, sizeId, userId, quantity) => {
 
     throw error;
   }
-
-  return await cartDao.postCart(productOption.id, userId, quantity);
+  return await cartDao.postCart(productOptionId, userId, quantity);
 };
 
 module.exports = {
