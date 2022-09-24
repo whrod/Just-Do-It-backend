@@ -42,7 +42,7 @@ const getProductOption = async (productOptionId) => {
   return productOption;
 };
 
-//productId, sizeId로 productOption구할떄
+//productId, sizeId로 productOption구할떄 장바구니 옵션변경에서 필요?
 const getProductOptionBySize = async (productId, sizeId) => {
   const [productOption] = await database.query(
     `SELECT
@@ -83,7 +83,6 @@ const postCart = async (productOptionId, userId, quantity) => {
   }
   return result;
 };
-
 // const checkCartUser = async (userId) => {
 //   const result = database.query(
 //     `
@@ -122,6 +121,5 @@ module.exports = {
   getProductOption,
   getProductOptionBySize,
   postCart,
-  // checkCartUser,
   updateCart,
 };
