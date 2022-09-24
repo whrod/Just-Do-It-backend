@@ -8,7 +8,7 @@ const getUserByUsername = async (userName) => {
         username AS userName,
         fullname AS fullName,
         password,
-        phone_number,
+        phone_number AS phoneNumber,
         address,
         gender,
         birth
