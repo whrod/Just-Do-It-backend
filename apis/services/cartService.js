@@ -1,26 +1,38 @@
 const { cartDao } = require('../models');
+const { checkStock } = require('../utils/checkStock');
 
-const getCart = async (userId) => {
-  const result = cartDao.getCartById(userId);
-  return await result;
+const getCartByUserId = async (userId) => {
+  const cart = await cartDao.getCartByUserId(userId);
+
+  // const a = [];
+  // for (let i = 0; i < cart.length; i++) a.push(cart[i].productId);
+  // // console.log(a);
+  // const getDetailInCart = await cartDao.getDetailInCart(a);
+
+  return await [cart, getDetailInCart];
 };
 
 const postCart = async (productOptionId, quantity, userId) => {
-  const productOption = await cartDao.getProductOption(productOptionId);
+  const checkIfTheCartExists = await cartDao.checkIfTheCartExists(
+    productOptionId,
+    userId
+  );
+  if (checkIfTheCartExists === undefined) {
+    await checkStock(productOptionId, quantity);
 
-  if (productOption.stock === 0) {
-    const error = new Error('OUT_OF_STOCK');
-    error.statusCode = 400;
+    return await cartDao.postCart(productOptionId, userId, quantity);
+  } else if (
+    checkIfTheCartExists.productOptionId === parseInt(productOptionId)
+  ) {
+    await checkStock(productOptionId, quantity);
 
-    throw error;
+    return await cartDao.updateQuantityWhenPostCart(
+      quantity,
+      productOptionId,
+      userId,
+      checkIfTheCartExists.cartId
+    );
   }
-  if (productOption.stock < quantity) {
-    const error = new Error('CART_QUANTITY_MORE_THAN_STOCK');
-    error.statusCode = 400;
-
-    throw error;
-  }
-  return await cartDao.postCart(productOptionId, userId, quantity);
 };
 
 const updateCart = async (cartId, productId, sizeId, userId, quantity) => {
@@ -29,35 +41,18 @@ const updateCart = async (cartId, productId, sizeId, userId, quantity) => {
     sizeId
   );
 
-  if (productOption.stock === 0) {
-    const error = new Error('OUT_OF_STOCK');
-    error.statusCode = 400;
-
-    throw error;
-  }
-
-  if (productOption.stock < quantity) {
-    const error = new Error('CART_QUANTITY_MORE_THAN_STOCK');
-    error.statusCode = 400;
-
-    throw error;
-  }
+  await checkStock(productOption.id, quantity);
 
   return await cartDao.updateCart(productOption.id, userId, quantity, cartId);
 };
 
-//해당 유저의 카트가 맞는지 확인
-// const checkCartUser = await cartDao.checkCartUser(userId);
-
-// if (checkCartUser.id === userId) {
-//   const error = new Error('WRONG CART');
-//   error.statusCode = 400;
-
-//   throw error;
-// }
+const deleteCart = async (cartId) => {
+  await cartDao.deleteCart(cartId);
+};
 
 module.exports = {
-  getCart,
+  getCartByUserId,
   postCart,
   updateCart,
+  deleteCart,
 };

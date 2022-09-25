@@ -3,7 +3,7 @@ const { catchAsync } = require('../utils/error');
 
 const getCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const result = await cartService.getCart(userId);
+  const result = await cartService.getCartByUserId(userId);
 
   res.status(200).send({ result });
 });
@@ -19,17 +19,26 @@ const postCart = catchAsync(async (req, res) => {
     .send({ message: `Product ${productId} was added to ${userId}'s cart` });
 });
 
-const updateCart = async (req, res) => {
+const updateCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const { cartId, productId, sizeId, quantity } = req.body;
 
   await cartService.updateCart(cartId, productId, sizeId, userId, quantity);
 
   res.status(201).send({ message: `updated ${userId}'s cart` });
-};
+});
+
+const deleteCart = catchAsync(async (req, res) => {
+  const { cartId } = req.body;
+
+  await cartService.deleteCart(cartId);
+
+  res.status(201).send({ message: `deleted ${cartId} cart` });
+});
 
 module.exports = {
   getCart,
   postCart,
   updateCart,
+  deleteCart,
 };
