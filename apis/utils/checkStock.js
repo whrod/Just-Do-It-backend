@@ -1,5 +1,4 @@
 const { cartDao } = require('../models');
-const { catchAsync } = require('./error');
 
 const checkStock = async (productOptionId, quantity) => {
   const productOption = await cartDao.getProductOption(productOptionId);
