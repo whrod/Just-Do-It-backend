@@ -13,6 +13,6 @@ const database = require('./dataSource');
 // }
 
 module.exports = {
-    // signUp,
-    // signIn,
-}
+  // signUp,
+  // signIn,
+};

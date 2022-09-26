@@ -1,4 +1,4 @@
-const { userSerive } = require('../services')
+const { userSerive } = require('../services');
 
 // const signUp = async() => {
 // }
@@ -7,11 +7,11 @@ const { userSerive } = require('../services')
 // }
 
 const getPing = async (req, res) => {
-    await res.status(200).send({message : "pong"});
-}
+  await res.status(200).send({ message: 'pong' });
+};
 
 module.exports = {
-    // signUp,
-    // signIn,
-    getPing
-}
+  // signUp,
+  // signIn,
+  getPing,
+};
