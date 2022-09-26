@@ -73,9 +73,12 @@ const getReview = async (productId) => {
     return await database.query(
       `SELECT
       r.content,
-      star_score AS starScore
+      r.star_score AS starScore,
+      r.created_at AS createdAt,
+      u.fullname AS fullName
       FROM reviews r
       JOIN products p ON p.id = r.product_id
+      JOIN users u ON u.id = r.user_id
       WHERE r.product_id = ? 
       `, [productId]
     )
