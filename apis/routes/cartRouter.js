@@ -4,7 +4,7 @@ const { loginRequired } = require('../utils/auth');
 
 cartRouter.get('/', loginRequired, cartController.getCarts);
 cartRouter.post('/', loginRequired, cartController.postCart);
-cartRouter.patch('/', loginRequired, cartController.updateCart);
+cartRouter.patch('/:cartId', loginRequired, cartController.updateCart);
 cartRouter.delete('/:cartId', loginRequired, cartController.deleteCart);
 
 module.exports = cartRouter;

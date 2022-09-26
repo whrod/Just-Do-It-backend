@@ -23,7 +23,8 @@ const postCart = catchAsync(async (req, res) => {
 
 const updateCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const { cartId, productOptionId, quantity } = req.body;
+  const cartId = req.params.cartId;
+  const { productOptionId, quantity } = req.body;
 
   await cartService.updateCart(cartId, productOptionId, userId, quantity);
 
