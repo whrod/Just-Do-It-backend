@@ -8,6 +8,17 @@ const getCartsByUserId = async (userId) => {
   return await cart;
 };
 
+const getDetailInCart = async (productId) => {
+  const images = await cartDao.getProductImages(productId);
+  const getProductOptions = await cartDao.getProductOptions(productId);
+  const [getDescrption] = await cartDao.getDescription(productId);
+
+  getDescrption.images = images;
+  getDescrption.productOptions = getProductOptions;
+
+  return getDescrption;
+};
+
 const postCart = async (productOptionId, quantity, userId) => {
   const checkIfTheCartExists = await cartDao.checkIfTheCartExists(
     productOptionId,
@@ -43,6 +54,7 @@ const deleteCart = async (userId, cartId) => {
 
 module.exports = {
   getCartsByUserId,
+  getDetailInCart,
   postCart,
   updateCart,
   deleteCart,
