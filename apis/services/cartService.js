@@ -9,7 +9,7 @@ const getCartByUserId = async (userId) => {
   // // console.log(a);
   // const getDetailInCart = await cartDao.getDetailInCart(a);
 
-  return await [cart, getDetailInCart];
+  return await [cart];
 };
 
 const postCart = async (productOptionId, quantity, userId) => {
