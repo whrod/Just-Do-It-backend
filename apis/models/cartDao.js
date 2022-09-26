@@ -32,6 +32,24 @@ const getCartsByUserId = async (userId) => {
   return cart;
 };
 
+const checkProductInCart = async (userId) => {
+  const [result] = await database.query(
+    `
+    SELECT
+        c.user_id,
+        po.product_id
+    FROM
+        carts c
+    JOIN
+        product_options po
+    ON po.id = c.product_option_id
+    WHERE c.user_id = ?
+    `,
+    [userId]
+  );
+  return result;
+};
+
 const getProductImages = async (productId) => {
   const result = await database.query(
     `
@@ -184,6 +202,7 @@ module.exports = {
   getCartsByUserId,
   getProductOption,
   getProductImages,
+  checkProductInCart,
   getProductOptions,
   getDescription,
   postCart,

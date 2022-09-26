@@ -8,7 +8,15 @@ const getCartsByUserId = async (userId) => {
   return await cart;
 };
 
-const getDetailInCart = async (productId) => {
+const getDetailInCart = async (userId, productId) => {
+  const checkProductInCart = await cartDao.checkProductInCart(userId);
+  if (checkProductInCart.product_id !== parseInt(productId)) {
+    const error = new Error('WRONG_INPUT_REQUEST');
+    error.statusCode = 400;
+
+    throw error;
+  }
+
   const images = await cartDao.getProductImages(productId);
   const getProductOptions = await cartDao.getProductOptions(productId);
   const [getDescrption] = await cartDao.getDescription(productId);
