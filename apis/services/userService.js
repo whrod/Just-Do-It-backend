@@ -1,5 +1,5 @@
 const { userDao } = require('../models');
-const bcyrpt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
@@ -44,12 +44,18 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
         throw err;
     }
 
+
     const checkUsername = await userDao.checkUsername(userName)
     if (checkUsername) {
         const err = new Error("already exists userid");
         err.statusCode = 400;
         throw err
     }
+
+    const makeHash = async (password, saltRound) => {
+        return await bcrypt.hash(password, saltRound);
+    }
+    password = await makeHash(password, 10);
 
     return await userDao.signUp(userName, password, fullName, phoneNumber, address, birth, gender)
 
