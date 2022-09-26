@@ -2,14 +2,14 @@ const { userService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
 const signUp = catchAsync(async (req, res) => {
-    const { userName, password, fullName, phoneNumber, address, birth, gender } = req.body
-    if (!userName || !password || !fullName || !phoneNumber || !address || !birth || !gender) {
-        const err = new Error("KEY_ERRROR");
-        err.statusCode = 400;
-        throw err
-    }
-    await userService.signUp(userName, password, fullName, phoneNumber, address, birth, gender);
-    return res.status(201).json({ message: "userCreated" });
+  const { userName, password, fullName, phoneNumber, address, birth, gender } = req.body
+  if (!userName || !password || !fullName || !phoneNumber || !address || !birth || !gender) {
+    const err = new Error("KEY_ERRROR");
+    err.statusCode = 400;
+    throw err
+  }
+  await userService.signUp(userName, password, fullName, phoneNumber, address, birth, gender);
+  return res.status(201).json({ message: "userCreated" });
 })
 
 const signIn = catchAsync(async (req, res) => {
@@ -33,7 +33,7 @@ const getPing = async (req, res) => {
 };
 
 module.exports = {
-    signUp,
-    signIn,
-    getPing,
+  signUp,
+  signIn,
+  getPing,
 };
