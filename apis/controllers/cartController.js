@@ -1,9 +1,9 @@
 const { cartService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
-const getCart = catchAsync(async (req, res) => {
+const getCarts = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const result = await cartService.getCartByUserId(userId);
+  const result = await cartService.getCartsByUserId(userId);
 
   res.status(200).send({ result });
 });
@@ -23,23 +23,28 @@ const postCart = catchAsync(async (req, res) => {
 
 const updateCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const { cartId, productId, sizeId, quantity } = req.body;
+  const { cartId, productOptionId, quantity } = req.body;
 
-  await cartService.updateCart(cartId, productId, sizeId, userId, quantity);
+  await cartService.updateCart(cartId, productOptionId, userId, quantity);
 
-  res.status(204).send({ message: `Cart was updated`, userId: userId });
+  res
+    .status(200)
+    .send({ message: `Cart was updated`, userId: userId, cartId: cartId });
 });
 
 const deleteCart = catchAsync(async (req, res) => {
+  const userId = req.user.id;
   const cartId = req.params.cartId;
 
-  await cartService.deleteCart(cartId);
+  await cartService.deleteCart(userId, cartId);
 
-  res.status(204).send({ message: `Cart was deleted`, cartId: cartId });
+  res
+    .status(200)
+    .send({ message: `Cart was deleted`, userId: userId, cartId: cartId });
 });
 
 module.exports = {
-  getCart,
+  getCarts,
   postCart,
   updateCart,
   deleteCart,
