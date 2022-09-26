@@ -74,10 +74,12 @@ const signIn = async (username, password) => {
         throw error;
     }
 
-    return (accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        algorithm: process.env.ALGORITHM,
-        expiresIn: process.env.JWT_EXPIRES_IN,
-    }));
+  const accessToken = await jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    algorithm: process.env.ALGORITHM,
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+
+  return await [user.fullName, accessToken];
 };
 
 const getUserById = async (id) => {

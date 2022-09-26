@@ -49,10 +49,10 @@ const getUserByUsername = async (username) => {
         `
     SELECT
         id,
-        username,
-        fullname,
+        username AS userName,
+        fullname AS fullName,
         password,
-        phone_number,
+        phone_number AS phoneNumber,
         address,
         gender,
         birth
