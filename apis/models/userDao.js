@@ -1,9 +1,9 @@
 const database = require('./dataSource');
 
 const signUp = async (userName, password, fullName, phoneNumber, address, birth, gender) => {
-    try {
-        return await database.query(
-            `INSERT INTO users(
+  try {
+    return await database.query(
+      `INSERT INTO users(
                 username,
                 password,
                 fullname,
@@ -13,39 +13,37 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
                 gender
             ) VALUES (?, ?, ?, ?, ?, ?, ?)
             `,
-            [userName, password, fullName, phoneNumber, address, birth, gender]
-        );
-    }
-    catch (err) {
-        const error = new Error('INVALID_DATA_INPUT');
-        error.statusCode = 500;
-        throw error;
-    }
+      [userName, password, fullName, phoneNumber, address, birth, gender]
+    );
+  }
+  catch (err) {
+    const error = new Error('INVALID_DATA_INPUT');
+    error.statusCode = 500;
+    throw error;
+  }
 }
 
 const checkUsername = async (userName) => {
-    try {
-        const [user] = await database.query(
-            `SELECT 
+  try {
+    const [user] = await database.query(
+      `SELECT 
             username
             FROM users
             where username = ?
             `, [userName]
-        );
-        return user;
-    }
-    catch (err) {
-        const error = new Error(`INVALID_DATA_INPUT`);
-        error.statusCode = 500;
-        throw error;
-    }
+    );
+    return user;
+  }
+  catch (err) {
+    const error = new Error(`INVALID_DATA_INPUT`);
+    error.statusCode = 500;
+    throw error;
+  }
 }
 
-
-
 const getUserByUsername = async (username) => {
-    const [user] = await database.query(
-        `SELECT
+  const [user] = await database.query(
+    `SELECT
         id,
         username,
         fullname,
@@ -57,13 +55,13 @@ const getUserByUsername = async (username) => {
     FROM users
     WHERE username = ?
         `, [username]
-    );
-    return user;
+  );
+  return user;
 };
 
 const getUserById = async (id) => {
-    const [user] = await database.query(
-        `SELECT
+  const [user] = await database.query(
+    `SELECT
         id,
         username,
         fullname,
@@ -72,13 +70,13 @@ const getUserById = async (id) => {
     FROM users
     WHERE id = ?
     `, [id]
-    );
-    return user;
+  );
+  return user;
 };
 
 module.exports = {
-    signUp,
-    checkUsername,
-    getUserByUsername,
-    getUserById,
+  signUp,
+  checkUsername,
+  getUserByUsername,
+  getUserById,
 };
