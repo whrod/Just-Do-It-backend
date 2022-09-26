@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 
 
 const signUp = async (userName, password, fullName, phoneNumber, address, birth, gender) => {
-
     const today = new Date();
     const todayTime = today.getTime();
     const birthTime = new Date(birth);
