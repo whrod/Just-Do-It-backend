@@ -16,7 +16,7 @@ const signIn = async (userName, password) => {
 
   if (!passwordMatch) {
     const error = new Error('INVALID_USER');
-    error.statusCode = 400;
+    error.statusCode = 401;
 
     throw error;
   }

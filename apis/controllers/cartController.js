@@ -14,9 +14,11 @@ const postCart = catchAsync(async (req, res) => {
 
   await cartService.postCart(productOptionId, quantity, userId);
 
-  res
-    .status(201)
-    .send({ message: `Product ${productId} was added to ${userId}'s cart` });
+  res.status(201).send({
+    message: `Cart was created`,
+    productId: productId,
+    userId: userId,
+  });
 });
 
 const updateCart = catchAsync(async (req, res) => {
@@ -25,15 +27,15 @@ const updateCart = catchAsync(async (req, res) => {
 
   await cartService.updateCart(cartId, productId, sizeId, userId, quantity);
 
-  res.status(201).send({ message: `updated ${userId}'s cart` });
+  res.status(204).send({ message: `Cart was updated`, userId: userId });
 });
 
 const deleteCart = catchAsync(async (req, res) => {
-  const { cartId } = req.body;
+  const cartId = req.params.cartId;
 
   await cartService.deleteCart(cartId);
 
-  res.status(201).send({ message: `deleted ${cartId} cart` });
+  res.status(204).send({ message: `Cart was deleted`, cartId: cartId });
 });
 
 module.exports = {
