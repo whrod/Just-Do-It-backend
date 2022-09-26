@@ -47,10 +47,10 @@ const getUserByUsername = async (username) => {
     const [user] = await database.query(
         `SELECT
         id,
-        username,
-        fullname,
+        username AS userName,
+        fullname AS fullName,
         password,
-        phone_number,
+        phone_number AS phoneNumber,
         address,
         gender,
         birth
