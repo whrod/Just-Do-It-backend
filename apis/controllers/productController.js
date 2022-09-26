@@ -1,7 +1,9 @@
 const { productService } = require('../services');
 
 const getProducts = async (req, res) => {
-  const { sort, color, brand, size, limit, offset } = req.query;
+  const { sort, limit, offset } = req.query;
+  let { size, color, brand } = req.query;
+
   if (!limit || !offset) {
     const err = new Error('QUERYSTRING_OMITTED');
     err.statusCode = 400;
@@ -9,13 +11,23 @@ const getProducts = async (req, res) => {
     throw err;
   }
 
+  if (typeof size === 'string') {
+    size = [size];
+  }
+  if (typeof color === 'string ') {
+    color = [color];
+  }
+  if (typeof brand === 'string ') {
+    brand = [brand];
+  }
+
   const products = await productService.getProducts(
     sort,
     color,
     brand,
     size,
-    parseInt(parseInt(limit)),
-    parseInt(parseInt(offset))
+    parseInt(limit),
+    parseInt(offset)
   );
   res.status(200).send({ list: products });
 };
