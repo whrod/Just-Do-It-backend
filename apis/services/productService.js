@@ -5,7 +5,7 @@ const getDetail = async (productId) => {
   const styleCodeFront = getStyleCode.style_code.substring(0, 6)
   if (!getStyleCode) {
     const err = new Error("product is not exists");
-    err.statusCode = 400;
+    err.statusCode = 404;
     throw err
   }
 
