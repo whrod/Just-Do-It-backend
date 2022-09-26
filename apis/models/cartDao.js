@@ -1,4 +1,5 @@
 const database = require('../models/dataSource');
+const { affectedRowsErrorHandler } = require('../utils/error');
 
 //이미지 필요, product_option 필요, stock 필요
 const getCartByUserId = async (userId) => {
@@ -40,6 +41,7 @@ const getCartByUserId = async (userId) => {
   return cart;
 };
 
+//카트에 담긴 제품의 옵션, 이미지 select 구현중
 const getDetailInCart = async (a) => {
   const b = [];
   for (let i = 0; i < a.length; i++) {
@@ -108,12 +110,7 @@ const postCart = async (productOptionId, userId, quantity) => {
     [productOptionId, userId, quantity]
   );
 
-  if (result.affectedRows !== 1) {
-    const error = new Error('WRONG_INPUT_REQUEST');
-    error.statusCode = 400;
-
-    throw error;
-  }
+  affectedRowsErrorHandler(result);
   return result;
 };
 
@@ -159,12 +156,7 @@ const updateQuantityWhenPostCart = async (
     `,
     [quantity, productOptionId, userId, cartId]
   );
-  if (result.affectedRows !== 1) {
-    const error = new Error('WROND_INPUT_REQUEST');
-    error.statusCode = 400;
-
-    throw error;
-  }
+  affectedRowsErrorHandler(result);
   return result;
 };
 
@@ -183,12 +175,7 @@ const updateCart = async (productOptionId, userId, quantity, cartId) => {
     `,
     [productOptionId, quantity, userId, cartId]
   );
-  if (result.affectedRows !== 1) {
-    const error = new Error('WRONG_INPUT_REQUEST');
-    error.statusCode = 400;
-
-    throw error;
-  }
+  affectedRowsErrorHandler(result);
   return result;
 };
 
@@ -202,12 +189,7 @@ const deleteCart = async (cartId) => {
     `,
     [cartId]
   );
-  if (result.affectedRows !== 1) {
-    const error = new Error('WRONG_INPUT_REQUEST');
-    error.statusCode = 400;
-
-    throw error;
-  }
+  affectedRowsErrorHandler(result);
 };
 
 module.exports = {
