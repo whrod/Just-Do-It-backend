@@ -11,7 +11,6 @@ const getCarts = catchAsync(async (req, res) => {
 const getDetailInCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const productId = req.query.productId;
-  console.log(productId);
 
   const result = await cartService.getDetailInCart(userId, productId);
 

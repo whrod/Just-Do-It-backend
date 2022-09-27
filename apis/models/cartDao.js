@@ -47,7 +47,6 @@ const checkProductInCart = async (userId) => {
     `,
     [userId]
   );
-  console.log(result);
   return result;
 };
 
