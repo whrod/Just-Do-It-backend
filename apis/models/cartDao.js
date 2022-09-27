@@ -59,7 +59,6 @@ const postCart = async (productOptionId, userId, quantity) => {
     [productOptionId, userId, quantity]
   );
   await affectedRowsErrorHandler(result);
-  return result;
 };
 
 const checkIfTheCartExists = async (productOptionId, userId) => {
@@ -97,7 +96,6 @@ const updateQuantityWhenPostCart = async (
     [quantity, productOptionId, userId, cartId]
   );
   await affectedRowsErrorHandler(result);
-  return result;
 };
 
 const updateCart = async (productOptionId, userId, quantity, cartId) => {
@@ -114,7 +112,6 @@ const updateCart = async (productOptionId, userId, quantity, cartId) => {
     [productOptionId, quantity, userId, cartId]
   );
   await affectedRowsErrorHandler(result);
-  return result;
 };
 
 const deleteCart = async (userId, cartId) => {
