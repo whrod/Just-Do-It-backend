@@ -1,4 +1,5 @@
 const { wishDao } = require('../models');
+const { showWish } = require('../models/wishDao');
 
 const createWish = async (productId, userId) => {
   const [checkWishlist] = await wishDao.checkWishlist(productId, userId)
@@ -26,8 +27,21 @@ const removeWish = async (productId, userId) => {
   return showWish
 }
 
+const postWish = async (productId, userId) => {
+  const [checkWishlist] = await wishDao.checkWishlist(productId, userId)
+  if (!checkWishlist) {
+    return (`WISHLIST_IS_EMPTY`)
+  }
+
+  const showWish = await wishDao.showWish(userId)
+  return showWish
+
+
+}
+
 
 module.exports = {
   createWish,
-  removeWish
+  removeWish,
+  postWish
 }
