@@ -13,7 +13,7 @@ const orderInDetail = catchAsync(async (req, res) => {
   });
 });
 
-const orderInCart = async (req, res) => {
+const orderInCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
 
   const result = await orderService.orderInCart(userId);
@@ -23,7 +23,7 @@ const orderInCart = async (req, res) => {
     userId: userId,
     numberOfOrder: result,
   });
-};
+});
 
 module.exports = {
   orderInDetail,
