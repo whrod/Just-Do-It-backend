@@ -99,7 +99,7 @@ const getDescription = async (productId) => {
 };
 
 const getProductOption = async (productOptionId) => {
-  const productOption = await database.query(
+  const [productOption] = await database.query(
     `
     SELECT
         stock
