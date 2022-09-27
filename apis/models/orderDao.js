@@ -32,7 +32,12 @@ const checkProduct = async (userId) => {
   return result;
 };
 
+const orderInCart = async (producOptions) => {
+  console.log(producOptions);
+};
+
 module.exports = {
   orderImmediately,
   checkProduct,
+  orderInCart,
 };

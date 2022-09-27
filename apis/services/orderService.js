@@ -8,15 +8,13 @@ const orderImmediately = async (productOptionId, quantity) => {
 };
 
 const checkProduct = async (userId) => {
-  const result = await orderDao.checkProduct(userId);
-
-  const a = new Array();
-  for (let i = 0; i < result.length; i++) {
-    a.push(result[i].productOptionId);
+  const checkedCart = await orderDao.checkProduct(userId.productOptions);
+  const productOptions = new Array();
+  for (let i = 0; i < checkedCart.length; i++) {
+    productOptions.push(checkedCart[i].productOptionId);
   }
-  console.log(a);
-  console.log(result);
-  return result;
+  console.log(productOptions);
+  const orderInCart = await orderDao.orderInCart(productOptions);
 };
 
 module.exports = {
