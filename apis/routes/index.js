@@ -5,7 +5,7 @@ const cartRouter = require('./cartRouter');
 const orderRouter = require('./orderRouter');
 
 router.use('/users', userRouter);
-router.use('/cart', cartRouter);
+router.use('/carts', cartRouter);
 router.use('/order', orderRouter);
 
 module.exports = router;
