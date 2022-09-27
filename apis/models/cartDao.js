@@ -33,7 +33,7 @@ const getCartsByUserId = async (userId) => {
 };
 
 const checkProductInCart = async (userId) => {
-  const [result] = await database.query(
+  const result = await database.query(
     `
     SELECT
         c.user_id AS userId,
@@ -47,6 +47,7 @@ const checkProductInCart = async (userId) => {
     `,
     [userId]
   );
+  console.log(result);
   return result;
 };
 
@@ -54,8 +55,8 @@ const getProductImages = async (productId) => {
   const result = await database.query(
     `
     SELECT
-    product_id AS productId,
-    image_url AS imageUrl
+        product_id AS productId,
+        image_url AS imageUrl
     FROM product_images pi
     JOIN products p
     ON pi.product_id = p.id
@@ -124,9 +125,7 @@ const postCart = async (productOptionId, userId, quantity) => {
     `,
     [productOptionId, userId, quantity]
   );
-
   await affectedRowsErrorHandler(result);
-  return result;
 };
 
 const checkIfTheCartExists = async (productOptionId, userId) => {
@@ -164,7 +163,6 @@ const updateQuantityWhenPostCart = async (
     [quantity, productOptionId, userId, cartId]
   );
   await affectedRowsErrorHandler(result);
-  return result;
 };
 
 const updateCart = async (productOptionId, userId, quantity, cartId) => {
@@ -181,7 +179,6 @@ const updateCart = async (productOptionId, userId, quantity, cartId) => {
     [productOptionId, quantity, userId, cartId]
   );
   await affectedRowsErrorHandler(result);
-  return result;
 };
 
 const deleteCart = async (userId, cartId) => {
@@ -197,6 +194,17 @@ const deleteCart = async (userId, cartId) => {
   );
 };
 
+const deleteAllCarts = async (userId) => {
+  await database.query(
+    `
+    DELETE FROM
+        carts
+    WHERE user_id = ?
+    `,
+    [userId]
+  );
+};
+
 module.exports = {
   getCartsByUserId,
   getProductOption,
@@ -209,4 +217,5 @@ module.exports = {
   updateQuantityWhenPostCart,
   updateCart,
   deleteCart,
+  deleteAllCarts,
 };

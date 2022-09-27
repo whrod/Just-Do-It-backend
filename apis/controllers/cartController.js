@@ -11,6 +11,7 @@ const getCarts = catchAsync(async (req, res) => {
 const getDetailInCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const productId = req.query.productId;
+  console.log(productId);
 
   const result = await cartService.getDetailInCart(userId, productId);
 
@@ -19,14 +20,14 @@ const getDetailInCart = catchAsync(async (req, res) => {
 
 const postCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const { productId, productOptionId, quantity } = req.body;
+  const { productOptionId, quantity } = req.body;
 
   await cartService.postCart(productOptionId, quantity, userId);
 
   res.status(201).send({
     message: `Cart was created`,
-    productId: productId,
     userId: userId,
+    productOptionId: productOptionId,
   });
 });
 
@@ -53,10 +54,22 @@ const deleteCart = catchAsync(async (req, res) => {
     .send({ message: `Cart was deleted`, userId: userId, cartId: cartId });
 });
 
+const deleteAllCarts = async (req, res) => {
+  const userId = req.user.id;
+
+  await cartService.deleteAllCarts(userId);
+
+  res.status(200).send({
+    message: `All carts were deleted`,
+    userId: userId,
+  });
+};
+
 module.exports = {
   getCarts,
   getDetailInCart,
   postCart,
   updateCart,
   deleteCart,
+  deleteAllCarts,
 };

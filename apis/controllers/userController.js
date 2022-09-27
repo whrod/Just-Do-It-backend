@@ -1,6 +1,34 @@
 const { userService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
+const signUp = catchAsync(async (req, res) => {
+  const { userName, password, fullName, phoneNumber, address, birth, gender } =
+    req.body;
+  if (
+    !userName ||
+    !password ||
+    !fullName ||
+    !phoneNumber ||
+    !address ||
+    !birth ||
+    !gender
+  ) {
+    const err = new Error('KEY_ERRROR');
+    err.statusCode = 400;
+    throw err;
+  }
+  await userService.signUp(
+    userName,
+    password,
+    fullName,
+    phoneNumber,
+    address,
+    birth,
+    gender
+  );
+  return res.status(201).json({ message: 'userCreated' });
+});
+
 const signIn = catchAsync(async (req, res) => {
   const { userName, password } = req.body;
   if (!userName || !password) {
@@ -17,11 +45,7 @@ const signIn = catchAsync(async (req, res) => {
     .send({ fullName: loggedInUser[0], accessToken: loggedInUser[1] });
 });
 
-const getPing = async (req, res) => {
-  await res.status(200).send({ message: 'pong' });
-};
-
 module.exports = {
+  signUp,
   signIn,
-  getPing,
 };
