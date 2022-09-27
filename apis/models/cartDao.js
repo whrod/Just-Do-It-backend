@@ -36,12 +36,9 @@ const checkProductInCart = async (userId) => {
   const result = await database.query(
     `
     SELECT
-        c.user_id AS userId,
         po.product_id AS productId
-    FROM
-        carts c
-    JOIN
-        product_options po
+    FROM product_options po
+    JOIN carts c
     ON po.id = c.product_option_id
     WHERE c.user_id = ?
     `,
@@ -49,7 +46,6 @@ const checkProductInCart = async (userId) => {
   );
   return result;
 };
-
 const getProductImages = async (productId) => {
   const result = await database.query(
     `
@@ -72,7 +68,7 @@ const getProductOptions = async (productId) => {
     SELECT 
         po.id AS productOptionId,
         s.foot_size AS size,
-        po.stock
+        po.stock AS stock
     FROM product_options po
     JOIN sizes s ON s.id = po.size_id
         WHERE po.product_id = ?
@@ -86,8 +82,8 @@ const getDescription = async (productId) => {
   const result = await database.query(
     `
     SELECT
-    p.brand_id AS brandId,
-    b.name AS brandName
+    p.brand_id,
+    b.name
     FROM products p
     JOIN brands b
     ON p.brand_id = b.id
@@ -208,8 +204,8 @@ const deleteAllCarts = async (userId) => {
 module.exports = {
   getCartsByUserId,
   getProductOption,
-  getProductImages,
   checkProductInCart,
+  getProductImages,
   getProductOptions,
   getDescription,
   postCart,

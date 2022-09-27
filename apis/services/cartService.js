@@ -1,5 +1,4 @@
 const { cartDao } = require('../models');
-const { checkIfTheCartExists } = require('../models/cartDao');
 const { checkStock } = require('../utils/checkStock');
 
 const getCartsByUserId = async (userId) => {
@@ -20,13 +19,13 @@ const getDetailInCart = async (userId, productId) => {
       getDescrption.productOptions = getProductOptions;
 
       return getDescrption;
-    } else {
-      const error = new Error('WRONG_INPUT_REQUEST');
-      error.statusCode = 400;
-
-      throw error;
     }
   }
+
+  const error = new Error('WRONG_INPUT_REQUEST');
+  error.statusCode = 400;
+
+  throw error;
 };
 
 const postCart = async (productOptionId, quantity, userId) => {
