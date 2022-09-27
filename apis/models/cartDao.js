@@ -82,8 +82,8 @@ const getDescription = async (productId) => {
   const result = await database.query(
     `
     SELECT
-    p.brand_id,
-    b.name
+    p.brand_id AS brandId,
+    b.name AS brandName
     FROM products p
     JOIN brands b
     ON p.brand_id = b.id
