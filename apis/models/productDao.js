@@ -12,7 +12,6 @@ const getProducts = async (sort, color, brand, size, limit, offset) => {
   if (size === undefined && color === undefined && brand === undefined) {
     statementWhere = '';
   }
-  console.log(statementWhere);
 
   if (sort !== undefined) {
     sort += ` ,p.id desc`;
@@ -24,24 +23,18 @@ const getProducts = async (sort, color, brand, size, limit, offset) => {
         p.id,
         b.name AS brandName,
         c.color,
-    CASE WHEN
-        s.foot_size !=0
-    THEN 
-        1
-    ELSE 0
-    END AS sizeStock,      
         p.name AS productName, 
         p.style_code AS styleCode, 
         p.retail_price AS retailPrice, 
         p.discount_price AS discountPrice,
         ifnull(discount_price, retail_price) AS price,
-    CASE WHEN 
+        CASE WHEN 
         ((retail_price - ifnull(discount_price,0))/retail_price)*100 = 100  
-    THEN 
+        THEN 
         0 
-    ELSE 
+        ELSE 
         ((retail_price - ifnull(discount_price,0))/retail_price)*100  
-    END AS discountRate, 
+        END AS discountRate, 
         b.name AS brandName, 
         p.release_date AS releaseDate, 
         p.description, 

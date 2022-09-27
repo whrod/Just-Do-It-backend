@@ -1,24 +1,14 @@
 const { productService } = require('../services');
+const { catchAsync } = require('../utils/error');
 
-const getProducts = async (req, res) => {
-  const { sort, limit, offset } = req.query;
-  let { size, color, brand } = req.query;
+const getProducts = catchAsync(async (req, res) => {
+  const { sort, size, color, brand, limit, offset } = req.query;
 
   if (!limit || !offset) {
     const err = new Error('QUERYSTRING_OMITTED');
     err.statusCode = 400;
 
     throw err;
-  }
-
-  if (typeof size === 'string') {
-    size = [size];
-  }
-  if (typeof color === 'string ') {
-    color = [color];
-  }
-  if (typeof brand === 'string ') {
-    brand = [brand];
   }
 
   const products = await productService.getProducts(
@@ -30,7 +20,7 @@ const getProducts = async (req, res) => {
     parseInt(offset)
   );
   res.status(200).send({ list: products });
-};
+});
 
 module.exports = {
   getProducts,

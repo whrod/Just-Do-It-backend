@@ -7,3 +7,4 @@ const getProducts = async (sort, color, brand, size, limit, offset) => {
 module.exports = {
   getProducts,
 };
+/products/;
