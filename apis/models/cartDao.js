@@ -42,7 +42,6 @@ const getProductOption = async (productOptionId) => {
     `,
     [productOptionId]
   );
-  console.log(productOption);
   return productOption;
 };
 
@@ -133,6 +132,18 @@ const deleteCart = async (userId, cartId) => {
   await affectedRowsErrorHandler(result);
 };
 
+const deleteAllCart = async (userId) => {
+  await database.query(
+    `
+    DELETE FROM
+        carts
+    WHERE user_id = ?
+    `,
+    [userId]
+  );
+  // await affectedRowsErrorHandler(result);
+};
+
 module.exports = {
   getCartsByUserId,
   getProductOption,
@@ -141,4 +152,5 @@ module.exports = {
   updateQuantityWhenPostCart,
   updateCart,
   deleteCart,
+  deleteAllCart,
 };

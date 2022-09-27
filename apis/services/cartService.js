@@ -41,9 +41,14 @@ const deleteCart = async (userId, cartId) => {
   await cartDao.deleteCart(userId, cartId);
 };
 
+const deleteAllCart = async (userId) => {
+  await cartDao.deleteAllCart(userId);
+};
+
 module.exports = {
   getCartsByUserId,
   postCart,
   updateCart,
   deleteCart,
+  deleteAllCart,
 };
