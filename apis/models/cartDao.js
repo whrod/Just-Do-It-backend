@@ -124,9 +124,7 @@ const postCart = async (productOptionId, userId, quantity) => {
     `,
     [productOptionId, userId, quantity]
   );
-
   await affectedRowsErrorHandler(result);
-  return result;
 };
 
 const checkIfTheCartExists = async (productOptionId, userId) => {
@@ -164,7 +162,6 @@ const updateQuantityWhenPostCart = async (
     [quantity, productOptionId, userId, cartId]
   );
   await affectedRowsErrorHandler(result);
-  return result;
 };
 
 const updateCart = async (productOptionId, userId, quantity, cartId) => {
@@ -181,7 +178,6 @@ const updateCart = async (productOptionId, userId, quantity, cartId) => {
     [productOptionId, quantity, userId, cartId]
   );
   await affectedRowsErrorHandler(result);
-  return result;
 };
 
 const deleteCart = async (userId, cartId) => {
@@ -198,6 +194,17 @@ const deleteCart = async (userId, cartId) => {
   await affectedRowsErrorHandler(result);
 };
 
+const deleteAllCarts = async (userId) => {
+  await database.query(
+    `
+    DELETE FROM
+        carts
+    WHERE user_id = ?
+    `,
+    [userId]
+  );
+};
+
 module.exports = {
   getCartsByUserId,
   getProductOption,
@@ -210,4 +217,5 @@ module.exports = {
   updateQuantityWhenPostCart,
   updateCart,
   deleteCart,
+  deleteAllCarts,
 };

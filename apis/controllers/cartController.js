@@ -8,6 +8,7 @@ const getCarts = catchAsync(async (req, res) => {
   res.status(200).send({ result });
 });
 
+<<<<<<< HEAD
 const getDetailInCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const productId = req.query.productId;
@@ -17,6 +18,9 @@ const getDetailInCart = catchAsync(async (req, res) => {
   res.status(200).send(result);
 });
 
+=======
+//productId와 productOptionId가 매칭이 안될경우 에러 추가 필요
+>>>>>>> feature/cart-CRUD
 const postCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const { productId, productOptionId, quantity } = req.body;
@@ -53,10 +57,21 @@ const deleteCart = catchAsync(async (req, res) => {
     .send({ message: `Cart was deleted`, userId: userId, cartId: cartId });
 });
 
+const deleteAllCarts = async (req, res) => {
+  const userId = req.user.id;
+
+  await cartService.deleteAllCarts(userId);
+
+  res.status(200).send({
+    message: `All carts were deleted`,
+    userId: userId,
+  });
+};
 module.exports = {
   getCarts,
   getDetailInCart,
   postCart,
   updateCart,
   deleteCart,
+  deleteAllCarts,
 };
