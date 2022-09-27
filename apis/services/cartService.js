@@ -42,7 +42,7 @@ const deleteCart = async (userId, cartId) => {
 };
 
 const deleteAllCarts = async (userId) => {
-  await cartDao.deleteAllCart(userId);
+  await cartDao.deleteAllCarts(userId);
 };
 
 module.exports = {

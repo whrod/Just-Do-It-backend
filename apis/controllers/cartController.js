@@ -48,7 +48,7 @@ const deleteCart = catchAsync(async (req, res) => {
 const deleteAllCarts = async (req, res) => {
   const userId = req.user.id;
 
-  await cartService.deleteAllCart(userId);
+  await cartService.deleteAllCarts(userId);
 
   res.status(200).send({
     message: `All carts were deleted`,
