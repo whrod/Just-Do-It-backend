@@ -1,27 +1,31 @@
 const { orderService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
-const orderImmediately = catchAsync(async (req, res) => {
+const orderInDetail = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const { productOptionId, quantity } = req.body;
-  await orderService.orderImmediately(productOptionId, quantity);
+  await orderService.orderInDetail(productOptionId, quantity);
 
   res.status(201).send({
-    message: `User ${userId} purchased ${quantity} item(s) ${productOptionId}`,
+    message: `One order was created`,
+    userId: userId,
+    productOptionId: productOptionId,
   });
 });
 
 const orderInCart = async (req, res) => {
   const userId = req.user.id;
-  const { quantity } = req.body;
 
-  //db의 카트ids와 프론트에서 전달해준 cartid가 같은지 에러핸들링
   const result = await orderService.orderInCart(userId);
 
-  res.status(200).send(result);
+  res.status(200).send({
+    message: `All cart orders were placed.`,
+    userId: userId,
+    numberOfOrder: result,
+  });
 };
 
 module.exports = {
-  orderImmediately,
+  orderInDetail,
   orderInCart,
 };

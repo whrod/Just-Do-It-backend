@@ -1,7 +1,7 @@
 const database = require('./dataSource');
 const { affectedRowsErrorHandler } = require('../utils/error');
 
-const orderImmediately = async (productOptionId, quantity) => {
+const orderInDetail = async (productOptionId, quantity) => {
   const result = await database.query(
     `
     UPDATE 
@@ -17,41 +17,23 @@ const orderImmediately = async (productOptionId, quantity) => {
   return result;
 };
 
-const checkCartForOrder = async (userId) => {
+const orderInCart = async (userId) => {
   const result = await database.query(
     `
-    SELECT
-        po.id AS productOptionId,
-        c.quantity
-    FROM product_options po
+    UPDATE
+    product_options po
     JOIN carts c
     ON c.product_option_id = po.id
+    SET
+    po.stock = po.stock - c.quantity
     WHERE c.user_id = ?
     `,
     [userId]
   );
-  console.dir(result);
-  return result;
-};
-
-const orderInCart = async (productOptionsForOrder, quantityForOrder) => {
-  console.log(productOptionsForOrder);
-  console.log(quantityForOrder);
-  await database.query(
-    `
-    UPDATE
-    product_options
-    SET stock = stock - (?)
-    WHERE id IN (?)
-    `,
-    [quantityForOrder, productOptionsForOrder]
-  );
-  console.log(result.affectedRows);
-  return result;
+  return result.affectedRows;
 };
 
 module.exports = {
-  orderImmediately,
-  checkCartForOrder,
+  orderInDetail,
   orderInCart,
 };
