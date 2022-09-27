@@ -7,7 +7,8 @@ const database = new DataSource({
   username: process.env.TYPEORM_USERNAME,
   password: process.env.TYPEORM_PASSWORD,
   database: process.env.TYPEORM_DATABASE,
-});
+})
+
 
 database
   .initialize()
@@ -17,5 +18,6 @@ database
   .catch((error) => {
     console.error('Error during Data Source initialization', error);
   });
+
 
 module.exports = database;

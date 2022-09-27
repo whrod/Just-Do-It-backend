@@ -1,9 +1,51 @@
 const database = require('./dataSource');
 
+const signUp = async (userName, password, fullName, phoneNumber, address, birth, gender) => {
+    try {
+        return await database.query(
+            `INSERT INTO users(
+                username,
+                password,
+                fullname,
+                phone_number,
+                address,
+                birth,
+                gender
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            `,
+            [userName, password, fullName, phoneNumber, address, birth, gender]
+        );
+    }
+    catch (err) {
+        const error = new Error('INVALID_DATA_INPUT');
+        error.statusCode = 500;
+        throw error;
+    }
+}
+
+const checkUsername = async (userName) => {
+    try {
+        const [user] = await database.query(
+            `SELECT 
+            username
+            FROM users
+            where username = ?
+            `, [userName]
+        );
+        return user;
+    }
+    catch (err) {
+        const error = new Error(`INVALID_DATA_INPUT`);
+        error.statusCode = 500;
+        throw error;
+    }
+}
+
+
+
 const getUserByUsername = async (username) => {
-  const [user] = await database.query(
-    `
-    SELECT
+    const [user] = await database.query(
+        `SELECT
         id,
         username AS userName,
         fullname AS fullName,
@@ -14,16 +56,14 @@ const getUserByUsername = async (username) => {
         birth
     FROM users
     WHERE username = ?
-        `,
-    [username]
-  );
-  return user;
+        `, [username]
+    );
+    return user;
 };
 
 const getUserById = async (id) => {
-  const [user] = await database.query(
-    `
-    SELECT
+    const [user] = await database.query(
+        `SELECT
         id,
         username,
         fullname,
@@ -31,13 +71,14 @@ const getUserById = async (id) => {
         address
     FROM users
     WHERE id = ?
-    `,
-    [id]
-  );
-  return user;
+    `, [id]
+    );
+    return user;
 };
 
 module.exports = {
-  getUserByUsername,
-  getUserById,
+    signUp,
+    checkUsername,
+    getUserByUsername,
+    getUserById,
 };
