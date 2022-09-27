@@ -41,7 +41,7 @@ const deleteCart = async (userId, cartId) => {
   await cartDao.deleteCart(userId, cartId);
 };
 
-const deleteAllCart = async (userId) => {
+const deleteAllCarts = async (userId) => {
   await cartDao.deleteAllCart(userId);
 };
 
@@ -50,5 +50,5 @@ module.exports = {
   postCart,
   updateCart,
   deleteCart,
-  deleteAllCart,
+  deleteAllCarts,
 };

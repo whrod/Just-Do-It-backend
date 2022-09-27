@@ -132,7 +132,7 @@ const deleteCart = async (userId, cartId) => {
   await affectedRowsErrorHandler(result);
 };
 
-const deleteAllCart = async (userId) => {
+const deleteAllCarts = async (userId) => {
   await database.query(
     `
     DELETE FROM
@@ -152,5 +152,5 @@ module.exports = {
   updateQuantityWhenPostCart,
   updateCart,
   deleteCart,
-  deleteAllCart,
+  deleteAllCarts,
 };

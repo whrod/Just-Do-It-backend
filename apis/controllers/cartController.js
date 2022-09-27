@@ -45,7 +45,7 @@ const deleteCart = catchAsync(async (req, res) => {
     .send({ message: `Cart was deleted`, userId: userId, cartId: cartId });
 });
 
-const deleteAllCart = async (req, res) => {
+const deleteAllCarts = async (req, res) => {
   const userId = req.user.id;
 
   await cartService.deleteAllCart(userId);
@@ -60,5 +60,5 @@ module.exports = {
   postCart,
   updateCart,
   deleteCart,
-  deleteAllCart,
+  deleteAllCarts,
 };
