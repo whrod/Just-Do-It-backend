@@ -59,8 +59,8 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
 }
 
 
-const signIn = async (username, password) => {
-  const user = await userDao.getUserByUsername(username);
+const signIn = async (userName, password) => {
+  const user = await userDao.getUserByUsername(userName);
 
   if (user === undefined) {
     const error = new Error('INVALID_USER');
@@ -78,8 +78,10 @@ const signIn = async (username, password) => {
   }
 
   return (accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+
     algorithm: process.env.ALGORITHM,
     expiresIn: process.env.JWT_EXPIRES_IN,
+
   }));
 };
 

@@ -1,15 +1,20 @@
-const { wishService } = require('../services');
+const { wishService, userService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
 const createWish = catchAsync(async (req, res) => {
-  const { productId, userName } = req.body;
-  if (!productId || userName) {
+  console.log("controller입니당")
+
+  const { productId } = req.body;
+  console.log(productId)
+  if (!productId) {
     const err = new Error('KEY_ERROR');
     error.statusCode = 400;
     throw err;
   }
-  const createWish = await wishService.createWish(productId, userName)
-  const postWish = await wisthService.postWish(productId, userName)
+  const userId = users.id
+  
+  const createWish = await wishService.createWish(productId, userId)
+
 
   return res.status(201).json({ message: "CREATE_SUCCESS" })
 })

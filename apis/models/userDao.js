@@ -43,7 +43,7 @@ const checkUsername = async (userName) => {
 
 
 
-const getUserByUsername = async (username) => {
+const getUserByUsername = async (userName) => {
     const [user] = await database.query(
         `SELECT
         id,
@@ -56,7 +56,7 @@ const getUserByUsername = async (username) => {
         birth
     FROM users
     WHERE username = ?
-        `, [username]
+        `, [userName]
     );
     return user;
 };

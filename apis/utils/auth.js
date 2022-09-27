@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { userService } = require('../services');
+const { wishService } = require('../services')
 const { catchAsync } = require('./error');
 
 const loginRequired = catchAsync(async (req, res, next) => {

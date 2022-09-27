@@ -1,31 +1,35 @@
 const database = require('./dataSource');
 
-const createWish = async (productId) => {
+const createWish = async (productId, userId) => {
   try {
     return await database.query(
       `INSERT INTO wishlist(
-        products_id,
-        user_id)
-        (SELECT users.username 
-        FROM users u LEFT JOIN wishlist w
-        ON u.id = w.user_id
-        WHERE w.user_id IS NULL
-        )
-        VALUES(?, ?)
-    `,
-      [productId, userName]
+        product_id,
+        user_id
+        ) VALUES(?, ?)
+    `, [productId, userId]
     );
+  } catch (err) {
+    const error = new Error('INVALID_DATA_INPUT');
+    error.statusCode = 500;
+    throw error;
+  }
+}
 
-
-    //   return await database.query(
-    //     `SELECT
-    //   p.thumbnail AS thumbnail,
-    //   p.name AS productName,
-    //   IFNULL(p.discount_price, p.retail_price) AS price
-    //   FROM products p
-    //   WHERE p.id = ?
-    // `, [productId]
-    //   )
+const showWish = async (userId) => {
+  try {
+    return await database.query(
+      `SELECT
+      p.thumbnail AS thumbnail,
+      p.name AS name,
+      IFNULL(p.discount_price, p.retail_price) AS price,
+      u.id AS userId
+      FROM products p
+      JOIN wishlist w ON w.product_id = p.id
+      JOIN users u ON u.id = w.user_id
+      WHERE w.user_id = ?
+    `, [userId]
+    );
   } catch (err) {
     const error = new Error('INVALID_DATA_INPUT');
     error.statusCode = 500;
@@ -67,5 +71,6 @@ const checkWishlist = async (productId, userName) => {
 module.exports = {
   createWish,
   removeWish,
-  checkWishlist
+  checkWishlist,
+  showWish
 }
