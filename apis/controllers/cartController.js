@@ -8,6 +8,15 @@ const getCarts = catchAsync(async (req, res) => {
   res.status(200).send({ result });
 });
 
+const getDetailInCart = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const productId = req.query.productId;
+
+  const result = await cartService.getDetailInCart(userId, productId);
+
+  res.status(200).send(result);
+});
+
 const postCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const { productId, productOptionId, quantity } = req.body;
@@ -46,6 +55,7 @@ const deleteCart = catchAsync(async (req, res) => {
 
 module.exports = {
   getCarts,
+  getDetailInCart,
   postCart,
   updateCart,
   deleteCart,

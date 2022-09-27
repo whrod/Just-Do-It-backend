@@ -32,6 +32,72 @@ const getCartsByUserId = async (userId) => {
   return cart;
 };
 
+const checkProductInCart = async (userId) => {
+  const [result] = await database.query(
+    `
+    SELECT
+        c.user_id,
+        po.product_id
+    FROM
+        carts c
+    JOIN
+        product_options po
+    ON po.id = c.product_option_id
+    WHERE c.user_id = ?
+    `,
+    [userId]
+  );
+  return result;
+};
+
+const getProductImages = async (productId) => {
+  const result = await database.query(
+    `
+    SELECT
+    product_id,
+    image_url
+    FROM product_images pi
+    JOIN products p
+    ON pi.product_id = p.id
+    WHERE p.id = ?
+    `,
+    [productId]
+  );
+  return result;
+};
+
+const getProductOptions = async (productId) => {
+  const result = await database.query(
+    `
+    SELECT 
+        po.id AS productOptionId,
+        s.foot_size AS size,
+        po.stock AS stock
+    FROM product_options po
+    JOIN sizes s ON s.id = po.size_id
+        WHERE po.product_id = ?
+    `,
+    [productId]
+  );
+  return result;
+};
+
+const getDescription = async (productId) => {
+  const result = await database.query(
+    `
+    SELECT
+    p.brand_id,
+    b.name
+    FROM products p
+    JOIN brands b
+    ON p.brand_id = b.id
+    WHERE p.id = ?
+    `,
+    [productId]
+  );
+  return result;
+};
+
 const getProductOption = async (productOptionId) => {
   const productOption = await database.query(
     `
@@ -42,7 +108,6 @@ const getProductOption = async (productOptionId) => {
     `,
     [productOptionId]
   );
-  console.log(productOption);
   return productOption;
 };
 
@@ -136,6 +201,10 @@ const deleteCart = async (userId, cartId) => {
 module.exports = {
   getCartsByUserId,
   getProductOption,
+  getProductImages,
+  checkProductInCart,
+  getProductOptions,
+  getDescription,
   postCart,
   checkIfTheCartExists,
   updateQuantityWhenPostCart,
