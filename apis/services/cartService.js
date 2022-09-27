@@ -1,13 +1,9 @@
 const { cartDao } = require('../models');
+const { checkIfTheCartExists } = require('../models/cartDao');
 const { checkStock } = require('../utils/checkStock');
 
-const getCartByUserId = async (userId) => {
-  const cart = await cartDao.getCartByUserId(userId);
-
-  // const a = [];
-  // for (let i = 0; i < cart.length; i++) a.push(cart[i].productId);
-  // // console.log(a);
-  // const getDetailInCart = await cartDao.getDetailInCart(a);
+const getCartsByUserId = async (userId) => {
+  const cart = await cartDao.getCartsByUserId(userId);
 
   return await cart;
 };
@@ -35,23 +31,18 @@ const postCart = async (productOptionId, quantity, userId) => {
   }
 };
 
-const updateCart = async (cartId, productId, sizeId, userId, quantity) => {
-  const productOption = await cartDao.getProductOptionBySelect(
-    productId,
-    sizeId
-  );
+const updateCart = async (cartId, productOptionId, userId, quantity) => {
+  await checkStock(productOptionId, quantity);
 
-  await checkStock(productOption.id, quantity);
-
-  return await cartDao.updateCart(productOption.id, userId, quantity, cartId);
+  return await cartDao.updateCart(productOptionId, userId, quantity, cartId);
 };
 
-const deleteCart = async (cartId) => {
-  await cartDao.deleteCart(cartId);
+const deleteCart = async (userId, cartId) => {
+  await cartDao.deleteCart(userId, cartId);
 };
 
 module.exports = {
-  getCartByUserId,
+  getCartsByUserId,
   postCart,
   updateCart,
   deleteCart,
