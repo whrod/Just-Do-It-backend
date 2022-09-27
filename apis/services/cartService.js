@@ -17,9 +17,8 @@ const postCart = async (productOptionId, quantity, userId) => {
     await checkStock(productOptionId, quantity);
 
     return await cartDao.postCart(productOptionId, userId, quantity);
-  } else if (
-    checkIfTheCartExists.productOptionId === parseInt(productOptionId)
-  ) {
+  }
+  if (checkIfTheCartExists.productOptionId === parseInt(productOptionId)) {
     await checkStock(productOptionId, quantity);
 
     return await cartDao.updateQuantityWhenPostCart(
