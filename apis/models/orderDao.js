@@ -17,11 +17,12 @@ const orderImmediately = async (productOptionId, quantity) => {
   return result;
 };
 
-const checkProduct = async (userId) => {
+const checkCartForOrder = async (userId) => {
   const result = await database.query(
     `
     SELECT
-        po.id AS productOptionId
+        po.id AS productOptionId,
+        c.quantity
     FROM product_options po
     JOIN carts c
     ON c.product_option_id = po.id
@@ -29,15 +30,28 @@ const checkProduct = async (userId) => {
     `,
     [userId]
   );
+  console.dir(result);
   return result;
 };
 
-const orderInCart = async (producOptions) => {
-  console.log(producOptions);
+const orderInCart = async (productOptionsForOrder, quantityForOrder) => {
+  console.log(productOptionsForOrder);
+  console.log(quantityForOrder);
+  await database.query(
+    `
+    UPDATE
+    product_options
+    SET stock = stock - (?)
+    WHERE id IN (?)
+    `,
+    [quantityForOrder, productOptionsForOrder]
+  );
+  console.log(result.affectedRows);
+  return result;
 };
 
 module.exports = {
   orderImmediately,
-  checkProduct,
+  checkCartForOrder,
   orderInCart,
 };
