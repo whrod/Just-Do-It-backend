@@ -50,7 +50,7 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
     throw err
   }
   const makeHash = async (password, saltRound) => {
-    return await bcrypt.hash(password, saltRound);
+    return await bcyrpt.hash(password, saltRound);
   }
   password = await makeHash(password, 10);
 

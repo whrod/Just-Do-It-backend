@@ -37,29 +37,31 @@ const showWish = async (userId) => {
   }
 }
 
-const removeWish = async (productId, userName) => {
+const removeWish = async (productId) => {
   try {
     return await database.query(
       `DELETE
-      FROM wishlist AS wishList
-      WHERE product_id = ?
+      FROM wishlist
+      WHERE product_id = ? 
   `, [productId]
     )
+
+
   } catch (err) {
-    const error = new Error('INVALID_DATA_INPUT');
+    const error = new Error('INVALID_DATA_INPUT(removeWish)');
     error.statusCode = 500;
     throw error;
   }
 }
 
-const checkWishlist = async (productId, userName) => {
+const checkWishlist = async (productId, userId) => {
   try {
     return await database.query(
       `SELECT
       product_id
       FROM wishlist
-      WHERE product_id = ?
-      `, [productId]
+      WHERE product_id = ? AND user_id = ?
+      `, [productId, userId]
     )
   }
   catch (err) {
