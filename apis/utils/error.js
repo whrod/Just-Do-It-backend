@@ -6,9 +6,7 @@ const catchAsync = (func) => {
 
 const globalErrorHandler = (error, req, res, next) => {
   console.error(error.stack);
-
   error.statusCode || 500;
-
   res.status(error.statusCode).json({ message: error.message });
 };
 
