@@ -9,22 +9,24 @@ const getCartsByUserId = async (userId) => {
 };
 
 const getDetailInCart = async (userId, productId) => {
-  const checkProductInCart = await cartDao.checkProductInCart(userId);
-  if (checkProductInCart.productId !== parseInt(productId)) {
-    const error = new Error('WRONG_INPUT_REQUEST');
-    error.statusCode = 400;
+  const productInCartArray = await cartDao.checkProductInCart(userId);
+  for (let i = 0; i < productInCartArray.length; i++) {
+    if (productInCartArray[i].productId === parseInt(productId)) {
+      const images = await cartDao.getProductImages(productId);
+      const getProductOptions = await cartDao.getProductOptions(productId);
+      const [getDescrption] = await cartDao.getDescription(productId);
 
-    throw error;
+      getDescrption.images = images;
+      getDescrption.productOptions = getProductOptions;
+
+      return getDescrption;
+    } else {
+      const error = new Error('WRONG_INPUT_REQUEST');
+      error.statusCode = 400;
+
+      throw error;
+    }
   }
-
-  const images = await cartDao.getProductImages(productId);
-  const getProductOptions = await cartDao.getProductOptions(productId);
-  const [getDescrption] = await cartDao.getDescription(productId);
-
-  getDescrption.images = images;
-  getDescrption.productOptions = getProductOptions;
-
-  return getDescrption;
 };
 
 const postCart = async (productOptionId, quantity, userId) => {
