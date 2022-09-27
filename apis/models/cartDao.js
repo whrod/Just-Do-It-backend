@@ -58,7 +58,6 @@ const postCart = async (productOptionId, userId, quantity) => {
     `,
     [productOptionId, userId, quantity]
   );
-
   await affectedRowsErrorHandler(result);
   return result;
 };
@@ -141,7 +140,6 @@ const deleteAllCarts = async (userId) => {
     `,
     [userId]
   );
-  // await affectedRowsErrorHandler(result);
 };
 
 module.exports = {
