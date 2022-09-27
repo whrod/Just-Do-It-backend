@@ -33,7 +33,7 @@ const getCartsByUserId = async (userId) => {
 };
 
 const getProductOption = async (productOptionId) => {
-  const productOption = await database.query(
+  const [productOption] = await database.query(
     `
     SELECT
         stock
@@ -42,6 +42,7 @@ const getProductOption = async (productOptionId) => {
     `,
     [productOptionId]
   );
+  console.log(productOption);
   return productOption;
 };
 
