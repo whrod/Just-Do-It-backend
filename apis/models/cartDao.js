@@ -42,7 +42,6 @@ const getProductOption = async (productOptionId) => {
     `,
     [productOptionId]
   );
-  console.log(productOption);
   return productOption;
 };
 
