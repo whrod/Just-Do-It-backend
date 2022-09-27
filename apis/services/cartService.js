@@ -10,7 +10,7 @@ const getCartsByUserId = async (userId) => {
 
 const getDetailInCart = async (userId, productId) => {
   const checkProductInCart = await cartDao.checkProductInCart(userId);
-  if (checkProductInCart.product_id !== parseInt(productId)) {
+  if (checkProductInCart.productId !== parseInt(productId)) {
     const error = new Error('WRONG_INPUT_REQUEST');
     error.statusCode = 400;
 
