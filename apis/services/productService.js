@@ -4,7 +4,7 @@ const getDetail = async (productId) => {
   const [getStyleCode] = await productDao.getStyleCode(productId);
   const styleCodeFront = getStyleCode.style_code.substring(0, 6)
   if (!getStyleCode) {
-    const err = new Error("product is not exists");
+    const err = new Error("product is not exist");
     err.statusCode = 404;
     throw err
   }

@@ -49,6 +49,10 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
     err.statusCode = 400;
     throw err
   }
+  const makeHash = async (password, saltRound) => {
+    return await bcrypt.hash(password, saltRound);
+  }
+  password = await makeHash(password, 10);
 
   return await userDao.signUp(userName, password, fullName, phoneNumber, address, birth, gender)
 

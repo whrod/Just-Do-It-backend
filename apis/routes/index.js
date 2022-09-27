@@ -6,6 +6,6 @@ const wishRouter = require('./wishRouter');
 
 router.use('/users', userRouter);
 router.use('/product', productRouter);
-router.use('/wish', wishRouter);
+router.use('/wishlist', wishRouter);
 
 module.exports = router;
