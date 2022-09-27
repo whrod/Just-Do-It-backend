@@ -8,17 +8,16 @@ const getCarts = catchAsync(async (req, res) => {
   res.status(200).send({ result });
 });
 
-//productId와 productOptionId가 매칭이 안될경우 에러 추가 필요
 const postCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const { productId, productOptionId, quantity } = req.body;
+  const { productOptionId, quantity } = req.body;
 
   await cartService.postCart(productOptionId, quantity, userId);
 
   res.status(201).send({
     message: `Cart was created`,
-    productId: productId,
     userId: userId,
+    productOptionId: productOptionId,
   });
 });
 
