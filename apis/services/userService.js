@@ -44,7 +44,6 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
     throw err;
   }
 
-
   const checkUsername = await userDao.checkUsername(userName)
   if (checkUsername) {
     const err = new Error("already exists userid");
