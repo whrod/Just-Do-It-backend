@@ -43,7 +43,8 @@ const getProductOptions = async (productId) => {
 const getDescription = async (productId) => {
   try {
     const getDescription = await database.query(
-      `SELECT
+      `SELECT 
+      distinct
       b.name AS brandName,
       p.name AS productName,
       p.style_code AS styleCode,
@@ -107,14 +108,14 @@ const getStyleCode = async (productId) => {
   }
 }
 
-const getThumbnail = async (styleCodeFront) => {
+const getThumbnail = async (getStyleCode) => {
   try {
     return await database.query(
       `SELECT
       thumbnail
       FROM products
       WHERE LEFT(style_code,6) = ?
-      `, [styleCodeFront]
+      `, [getStyleCode]
     )
   }
   catch (err) {
@@ -124,7 +125,23 @@ const getThumbnail = async (styleCodeFront) => {
   }
 }
 
-
+const isWished = async (productId, userId) => {
+  try {
+    return await database.query(
+      `SELECT
+      user_id,
+      product_id
+      FROM wishlist
+      WHERE product_id = ? AND user_id = ? 
+      `, [productId, userId]
+    )
+  }
+  catch (err) {
+    const error = new Error(`INVALID_DATA_INPUT`);
+    error.statusCode = 500;
+    throw error;
+  }
+}
 
 module.exports = {
   getImage,
@@ -132,5 +149,6 @@ module.exports = {
   getDescription,
   getReview,
   getStyleCode,
-  getThumbnail
+  getThumbnail,
+  isWished
 }
