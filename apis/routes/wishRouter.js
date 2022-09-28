@@ -1,9 +1,9 @@
-const wishRouter = require('express').Router();
+const router = require('express').Router();
 const { wishController } = require('../controllers');
 const { loginRequired } = require("../utils/auth");
 
-wishRouter.post('/create/:productId', loginRequired, wishController.createWish);
-wishRouter.get('/', loginRequired, wishController.postWish)
-wishRouter.delete('/remove', loginRequired, wishController.removeWish);
+router.post('/:productId', loginRequired, wishController.createWish);
+router.get('', loginRequired, wishController.postWish)
+router.delete('/:productId', loginRequired, wishController.removeWish);
 
-module.exports = wishRouter;
+module.exports = router;

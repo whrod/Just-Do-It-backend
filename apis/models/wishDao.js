@@ -16,7 +16,7 @@ const createWish = async (productId, userId) => {
   }
 }
 
-const showWish = async (userId) => {
+const getWishList = async (userId) => {
   try {
     return await database.query(
       `SELECT
@@ -75,5 +75,5 @@ module.exports = {
   createWish,
   removeWish,
   checkWishlist,
-  showWish
+  getWishList
 }

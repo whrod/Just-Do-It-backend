@@ -5,8 +5,6 @@ const { catchAsync } = require('../utils/error');
 const createWish = catchAsync(async (req, res) => {
   const userId = req.user.id
   const { productId } = req.params;
-  console.log(userId)
-  console.log(productId)
   if (!productId) {
     const err = new Error('KEY_ERROR');
     err.statusCode = 400;
@@ -18,7 +16,7 @@ const createWish = catchAsync(async (req, res) => {
 
 const removeWish = catchAsync(async (req, res) => {
   const userId = req.user.id
-  const { productId } = req.body;
+  const { productId } = req.params;
   if (!productId) {
     const err = new Error('KEY_ERROR');
     err.statusCode = 400;
@@ -35,7 +33,7 @@ const postWish = catchAsync(async (req, res) => {
     err.statusCode = 400;
     throw err;
   }
-  const result = await wishService.postWish(userId)
+  const result = await wishService.getWishList(userId)
   return res.status(201).json(result)
 }
 

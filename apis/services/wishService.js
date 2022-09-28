@@ -2,16 +2,14 @@ const { wishDao } = require('../models');
 
 const createWish = async (productId, userId) => {
   const [checkWishlist] = await wishDao.checkWishlist(productId, userId)
-  console.log(checkWishlist)
-  console.log([checkWishlist])
   if (checkWishlist) {
     const err = new Error(`ALREADY_EXIST`);
     err.statusCode = 400;
     throw err;
   }
   await wishDao.createWish(productId, userId)
-  const showWish = await wishDao.showWish(userId)
-  return showWish
+  const getWishList = await wishDao.getWishList(userId)
+  return getWishList
 }
 
 const removeWish = async (productId, userId) => {
@@ -22,24 +20,24 @@ const removeWish = async (productId, userId) => {
     throw err;
   }
   await wishDao.removeWish(productId)
-  const showWish = await wishDao.showWish(userId)
-  if (!showWish[0]) {
+  const getWishList = await wishDao.getWishList(userId)
+  if (!getWishList[0]) {
     return (`WISHLIST_IS_EMPTY`)
   }
-  return showWish
+  return getWishList
 }
 
-const postWish = async (userId) => {
-  const showWish = await wishDao.showWish(userId)
-  if (!showWish[0]) {
+const getWishList = async (userId) => {
+  const getWishList = await wishDao.getWishList(userId)
+  if (!getWishList[0]) {
     return (`WISHLIST_IS_EMPTY`)
   }
-  return showWish
+  return getWishList
 }
 
 
 module.exports = {
   createWish,
   removeWish,
-  postWish
+  getWishList
 }
