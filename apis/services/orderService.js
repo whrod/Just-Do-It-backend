@@ -10,9 +10,6 @@ const orderInDetail = async (productOptionId, quantity) => {
 const orderInCart = async (userId) => {
   const getCartsforOrder = await cartDao.getCartsByUserId(userId);
   for (let i = 0; i < getCartsforOrder.length; i++) {
-    console.log(getCartsforOrder[i].stock);
-    console.log(getCartsforOrder[i].quantity);
-
     if (getCartsforOrder[i].stock >= getCartsforOrder[i].quantity) {
       const result = await orderDao.orderInCart(userId);
       await cartDao.deleteAllCarts(userId);
