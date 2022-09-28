@@ -23,7 +23,9 @@ const showWish = async (userId) => {
       p.thumbnail AS thumbnail,
       p.name AS name,
       IFNULL(p.discount_price, p.retail_price) AS price,
-      u.id AS userId
+      u.id AS userId,
+      w.id AS wishlistId,
+      p.id AS productId
       FROM products p
       JOIN wishlist w ON w.product_id = p.id
       JOIN users u ON u.id = w.user_id
@@ -45,10 +47,8 @@ const removeWish = async (productId) => {
       WHERE product_id = ? 
   `, [productId]
     )
-
-
   } catch (err) {
-    const error = new Error('INVALID_DATA_INPUT(removeWish)');
+    const error = new Error('INVALID_DATA_INPUT');
     error.statusCode = 500;
     throw error;
   }
