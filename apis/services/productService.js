@@ -11,9 +11,8 @@ const getDetail = async (productId, userId) => {
     err.statusCode = 400;
     throw err
   }
-a
+
   const getThumbnail = await productDao.getThumbnail(styleCodeFront)
-  const getImage = await productDao.getImage(productId)
   const [getDescription] = await productDao.getDescription(productId)
 
   const getProductOptions = await productDao.getProductOptions(productId)
@@ -27,7 +26,6 @@ a
     }
   }
   getDescription.getThumbnail = getThumbnail;
-  getDescription.imageUrl = getImage;
   getDescription.productOptions = getProductOptions;
   getDescription.review = getReview;
   getDescription.isWished = isWished;

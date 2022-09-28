@@ -1,4 +1,3 @@
-//const { checkWishlist } = require('../models/wishDao');
 const { wishService } = require('../services');
 const { catchAsync } = require('../utils/error');
 

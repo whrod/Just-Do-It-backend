@@ -1,24 +1,5 @@
 const database = require('./dataSource');
 
-const getImage = async (productId) => {
-  try {
-    const images = await database.query(
-      `SELECT
-        product_id AS productId,
-        JSON_ARRAYAGG(image_url) AS imageUrlFunc
-      FROM product_images
-      GROUP BY product_id
-      HAVING product_id = ?
-      `, [productId]
-    )
-    return images;
-  }
-  catch (err) {
-    const error = new Error(`INVALID_DATA_INPUT`);
-    error.statusCode = 500;
-    throw error;
-  }
-}
 
 const getProductOptions = async (productId) => {
   try {
@@ -44,24 +25,19 @@ const getProductOptions = async (productId) => {
 const getDescription = async (productId) => {
   try {
     const getDescription = await database.query(
-      `SELECT
-        distinct
-        b.name AS brandName,
-        p.name AS productName,
-        p.style_code AS styleCode,
-        p.thumbnail AS thumbnail,
-        p.description,
-        p.retail_price AS retailPrice,
-        p.discount_price AS discountPrice,
-        c.color AS color,
-        JSON_ARRAYAGG(pi.image_url) AS imageUrlDes
-      FROM products p
-      JOIN product_options po ON po.product_id = p.id
-      JOIN colors c ON c.id = po.color_id
-      JOIN brands b ON b.id = p.brand_id
-      JOIN product_images pi ON pi.product_id = p.id
-      WHERE p.id = 1
-      GROUP BY p.id;
+      `select 
+      b.name as brandName, 
+      p.name AS productName, 
+      p.style_code AS styleCode, 
+      p.thumbnail AS thumbnail, 
+      p.description, 
+      p.retail_price, 
+      p.discount_price, 
+      JSON_ARRAYAGG(pi.image_url) AS imageURL
+      FROM products as p  
+      join product_images as pi on pi.product_id = p.id 
+      join brands as b on b.id = p.brand_id 
+      where p.id =?
       `, [productId]
     )
     return getDescription;
@@ -148,7 +124,6 @@ const isWished = async (productId, userId) => {
 }
 
 module.exports = {
-  getImage,
   getProductOptions,
   getDescription,
   getReview,
