@@ -4,10 +4,11 @@ const getImage = async (productId) => {
   try {
     const images = await database.query(
       `SELECT
-      product_id,
-      image_url AS imageUrl
+        product_id AS productId,
+        JSON_ARRAYAGG(image_url) AS imageUrlFunc
       FROM product_images
-      WHERE product_id = ?
+      GROUP BY product_id
+      HAVING product_id = ?
       `, [productId]
     )
     return images;
@@ -43,21 +44,24 @@ const getProductOptions = async (productId) => {
 const getDescription = async (productId) => {
   try {
     const getDescription = await database.query(
-      `SELECT 
-      distinct
-      b.name AS brandName,
-      p.name AS productName,
-      p.style_code AS styleCode,
-      p.thumbnail AS thumbnail,
-      p.description,
-      p.retail_price AS retailPrice,
-      p.discount_price AS discountPrice,
-      c.color AS color
+      `SELECT
+        distinct
+        b.name AS brandName,
+        p.name AS productName,
+        p.style_code AS styleCode,
+        p.thumbnail AS thumbnail,
+        p.description,
+        p.retail_price AS retailPrice,
+        p.discount_price AS discountPrice,
+        c.color AS color,
+        JSON_ARRAYAGG(pi.image_url) AS imageUrlDes
       FROM products p
       JOIN product_options po ON po.product_id = p.id
       JOIN colors c ON c.id = po.color_id
       JOIN brands b ON b.id = p.brand_id
-      WHERE p.id = ?
+      JOIN product_images pi ON pi.product_id = p.id
+      WHERE p.id = 1
+      GROUP BY p.id;
       `, [productId]
     )
     return getDescription;
@@ -73,10 +77,10 @@ const getReview = async (productId) => {
   try {
     return await database.query(
       `SELECT
-      r.content,
-      r.star_score AS starScore,
-      r.created_at AS createdAt,
-      u.fullname AS fullName
+        r.content,
+        r.star_score AS starScore,
+        r.created_at AS createdAt,
+        u.fullname AS fullName
       FROM reviews r
       JOIN products p ON p.id = r.product_id
       JOIN users u ON u.id = r.user_id
@@ -95,7 +99,7 @@ const getStyleCode = async (productId) => {
   try {
     return await database.query(
       `SELECT
-      style_code
+        style_code
       FROM products
       WHERE products.id = ?
       `, [productId]
@@ -112,7 +116,7 @@ const getThumbnail = async (getStyleCode) => {
   try {
     return await database.query(
       `SELECT
-      thumbnail
+      JSON_ARRAYAGG(thumbnail) AS thumbnail
       FROM products
       WHERE LEFT(style_code,6) = ?
       `, [getStyleCode]
@@ -129,8 +133,8 @@ const isWished = async (productId, userId) => {
   try {
     return await database.query(
       `SELECT
-      user_id,
-      product_id
+        user_id,
+        product_id
       FROM wishlist
       WHERE product_id = ? AND user_id = ? 
       `, [productId, userId]
@@ -152,3 +156,57 @@ module.exports = {
   getThumbnail,
   isWished
 }
+
+// SELECT
+// distinct
+// b.name AS brandName,
+//   p.name AS productName,
+//     p.style_code AS styleCode,
+//       p.thumbnail AS thumbnail,
+//         p.description,
+//         p.retail_price AS retailPrice,
+//           p.discount_price AS discountPrice,
+//             ANY_VALUE(c.color) AS color,
+//               JSON_ARRAYAGG(pi.image_url) AS imageUrl
+//       FROM products p
+//       JOIN product_options po ON po.product_id = p.id
+//       JOIN colors c ON c.id = po.color_id
+//       JOIN brands b ON b.id = p.brand_id
+//       JOIN product_images pi ON pi.product_id = p.id
+//       WHERE p.id = 1
+//       GROUP BY pi.product_id;
+
+
+//  SELECT
+//  b.name AS brandName,
+//  p.name AS productName,
+//  p.style_code AS styleCode,
+//     p.thumbnail AS thumbnail,
+//       p.description,
+//       p.retail_price AS retailPrice,
+//         p.discount_price AS discountPrice,
+//           JSON_ARRAYAGG(pi.image_url) AS imageUrl
+//     FROM products p
+//     JOIN product_options po ON po.product_id = p.id
+//     JOIN brands b ON b.id = p.brand_id
+//     JOIN product_images pi ON pi.product_id = p.id
+//     WHERE p.id = 1
+//     GROUP BY p.id
+//     HAVING p.id = 1;
+
+
+
+// SELECT
+// distinct
+// p.name AS productName,
+//   p.style_code AS styleCode,
+//     p.thumbnail AS thumbnail,
+//       p.description,
+//       p.retail_price AS retailPrice,
+//         p.discount_price AS discountPrice,
+//           JSON_ARRAYAGG(pi.image_url) AS imageUrl
+//       FROM products p
+//       JOIN product_images pi ON pi.product_id = p.id
+//       JOIN product_options po ON po.product_id = p.id                                                 
+//       WHERE p.id = 1
+//       GROUP BY p.id;

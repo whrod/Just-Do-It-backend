@@ -11,10 +11,11 @@ const getDetail = async (productId, userId) => {
     err.statusCode = 400;
     throw err
   }
-
+a
   const getThumbnail = await productDao.getThumbnail(styleCodeFront)
   const getImage = await productDao.getImage(productId)
   const [getDescription] = await productDao.getDescription(productId)
+
   const getProductOptions = await productDao.getProductOptions(productId)
   const [getReview] = await productDao.getReview(productId)
   let isWished = false;
