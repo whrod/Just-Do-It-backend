@@ -4,7 +4,9 @@ const { catchAsync } = require('../utils/error');
 
 const createWish = catchAsync(async (req, res) => {
   const userId = req.user.id
-  const { productId } = req.body;
+  const { productId } = req.params;
+  console.log(userId)
+  console.log(productId)
   if (!productId) {
     const err = new Error('KEY_ERROR');
     err.statusCode = 400;

@@ -2,6 +2,8 @@ const { wishDao } = require('../models');
 
 const createWish = async (productId, userId) => {
   const [checkWishlist] = await wishDao.checkWishlist(productId, userId)
+  console.log(checkWishlist)
+  console.log([checkWishlist])
   if (checkWishlist) {
     const err = new Error(`ALREADY_EXIST`);
     err.statusCode = 400;

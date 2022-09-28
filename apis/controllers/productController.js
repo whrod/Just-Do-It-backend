@@ -3,7 +3,7 @@ const { catchAsync } = require('../utils/error');
 
 
 const getDetail = catchAsync(async (req, res) => {
-  const { productId } = req.params;
+  const { productId } = req.body;
   if (!productId) {
     const err = new Error('KEY_ERROR');
     error.statusCode = 400;
