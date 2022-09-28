@@ -27,10 +27,6 @@ const getDetailInCart = async (userId, productId) => {
   throw error;
 };
 
-// const getDetailInCart = async (userId, cartId) => {
-//   const
-// }
-
 const postCart = async (productOptionId, quantity, userId) => {
   const checkIfTheCartExists = await cartDao.checkIfTheCartExists(
     productOptionId,
