@@ -3,7 +3,7 @@ const database = require('./dataSource');
 
 const getProductOptions = async (productId) => {
   try {
-    const data = await database.query(
+    return await database.query(
       `SELECT 
         po.id AS productOptionId,
         s.foot_size AS size,
@@ -13,7 +13,6 @@ const getProductOptions = async (productId) => {
       WHERE po.product_id = ?
       `, [productId]
     );
-    return data;
   }
   catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
@@ -26,17 +25,17 @@ const getDescription = async (productId) => {
   try {
     const getDescription = await database.query(
       `select 
-      b.name as brandName, 
-      p.name AS productName, 
-      p.style_code AS styleCode, 
-      p.thumbnail AS thumbnail, 
-      p.description, 
-      p.retail_price, 
-      p.discount_price, 
-      JSON_ARRAYAGG(pi.image_url) AS imageURL
+        b.name as brandName, 
+        p.name AS productName, 
+        p.style_code AS styleCode, 
+        p.thumbnail AS thumbnail, 
+        p.description AS description,
+        p.retail_price AS retailPrice, 
+        p.discount_price AS discountPrice, 
+        JSON_ARRAYAGG(pi.image_url) AS imageURL
       FROM products as p  
-      join product_images as pi on pi.product_id = p.id 
-      join brands as b on b.id = p.brand_id 
+      JOIN product_images pi ON pi.product_id = p.id 
+      JOIN brands b ON b.id = p.brand_id 
       where p.id =?
       `, [productId]
     )
@@ -131,57 +130,3 @@ module.exports = {
   getThumbnail,
   isWished
 }
-
-// SELECT
-// distinct
-// b.name AS brandName,
-//   p.name AS productName,
-//     p.style_code AS styleCode,
-//       p.thumbnail AS thumbnail,
-//         p.description,
-//         p.retail_price AS retailPrice,
-//           p.discount_price AS discountPrice,
-//             ANY_VALUE(c.color) AS color,
-//               JSON_ARRAYAGG(pi.image_url) AS imageUrl
-//       FROM products p
-//       JOIN product_options po ON po.product_id = p.id
-//       JOIN colors c ON c.id = po.color_id
-//       JOIN brands b ON b.id = p.brand_id
-//       JOIN product_images pi ON pi.product_id = p.id
-//       WHERE p.id = 1
-//       GROUP BY pi.product_id;
-
-
-//  SELECT
-//  b.name AS brandName,
-//  p.name AS productName,
-//  p.style_code AS styleCode,
-//     p.thumbnail AS thumbnail,
-//       p.description,
-//       p.retail_price AS retailPrice,
-//         p.discount_price AS discountPrice,
-//           JSON_ARRAYAGG(pi.image_url) AS imageUrl
-//     FROM products p
-//     JOIN product_options po ON po.product_id = p.id
-//     JOIN brands b ON b.id = p.brand_id
-//     JOIN product_images pi ON pi.product_id = p.id
-//     WHERE p.id = 1
-//     GROUP BY p.id
-//     HAVING p.id = 1;
-
-
-
-// SELECT
-// distinct
-// p.name AS productName,
-//   p.style_code AS styleCode,
-//     p.thumbnail AS thumbnail,
-//       p.description,
-//       p.retail_price AS retailPrice,
-//         p.discount_price AS discountPrice,
-//           JSON_ARRAYAGG(pi.image_url) AS imageUrl
-//       FROM products p
-//       JOIN product_images pi ON pi.product_id = p.id
-//       JOIN product_options po ON po.product_id = p.id                                                 
-//       WHERE p.id = 1
-//       GROUP BY p.id;
