@@ -1,5 +1,5 @@
 const { wishDao } = require('../models');
-const { showWish } = require('../models/wishDao');
+
 
 const createWish = async (productId, userId) => {
   const [checkWishlist] = await wishDao.checkWishlist(productId, userId)
