@@ -12,7 +12,7 @@ const getDetailInCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const cartId = req.params.cartId;
 
-  const result = await cartService.getDetailInCart(userId, cartId);
+  const result = await cartService.getDetailInCart(cartId, userId);
 
   res.status(200).send(result);
 });
