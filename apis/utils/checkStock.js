@@ -1,9 +1,8 @@
 const { cartDao } = require('../models');
 
 const checkStock = async (productOptionId, quantity) => {
-  const productOption = await cartDao.getProductOption(productOptionId);
-  console.log('checkStock');
-  console.log(productOption);
+  const productOption = await cartDao.getStock(productOptionId);
+
   if (productOption.stock === 0) {
     const error = new Error('OUT_OF_STOCK');
     error.statusCode = 400;

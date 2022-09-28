@@ -10,9 +10,9 @@ const getCarts = catchAsync(async (req, res) => {
 
 const getDetailInCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const productId = req.query.productId;
+  const cartId = req.params.cartId;
 
-  const result = await cartService.getDetailInCart(userId, productId);
+  const result = await cartService.getDetailInCart(cartId, userId);
 
   res.status(200).send(result);
 });

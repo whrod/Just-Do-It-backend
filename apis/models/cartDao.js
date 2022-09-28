@@ -46,60 +46,66 @@ const checkProductInCart = async (userId) => {
   );
   return result;
 };
-const getProductImages = async (productId) => {
+
+const getProductOptions = async (cartId, userId) => {
   const result = await database.query(
     `
     SELECT
-        product_id AS productId,
-        image_url AS imageUrl
-    FROM product_images pi
-    JOIN products p
-    ON pi.product_id = p.id
-    WHERE p.id = ?
-    `,
-    [productId]
-  );
-  return result;
-};
-
-const getProductOptions = async (productId) => {
-  const result = await database.query(
-    `
-    SELECT 
         po.id AS productOptionId,
         s.foot_size AS size,
-        po.stock AS stock
+	      stock
     FROM product_options po
-    JOIN sizes s ON s.id = po.size_id
-        WHERE po.product_id = ?
+    LEFT JOIN products p
+    ON p.id = po.product_id
+    JOIN sizes s
+    ON s.id = po.size_id
+    WHERE p.id IN
+    (SELECT p.id
+    FROM products p
+    JOIN product_options po
+    ON po.product_id = p.id
+    JOIN carts c
+    ON c.product_option_id = po.id
+    WHERE c.id = ?
+    AND c.user_id = ?)
     `,
-    [productId]
+    [cartId, userId]
   );
   return result;
 };
 
-const getDescription = async (productId) => {
-  const result = await database.query(
+const getDescription = async (cartId, userId) => {
+  const [result] = await database.query(
     `
     SELECT
-    p.brand_id AS brandId,
-    b.name AS brandName
+        p.id AS productId,
+        p.brand_id AS brandId,
+        b.name AS brandName,
+        JSON_ARRAYAGG(image_url) AS images
     FROM products p
     JOIN brands b
-    ON p.brand_id = b.id
-    WHERE p.id = ?
+    ON b.id = p.brand_id
+    JOIN product_images pi
+    ON p.id = pi.product_id
+    JOIN product_options po
+    ON po.product_id = p.id
+    JOIN carts c
+    ON c.product_option_id = po.id
+    WHERE c.id = ?
+    AND c.user_id = ?
     `,
-    [productId]
+    [cartId, userId]
   );
   return result;
 };
 
-const getProductOption = async (productOptionId) => {
+const getStock = async (productOptionId) => {
   const [productOption] = await database.query(
     `
     SELECT
+        product_id
         stock
-    FROM product_options   
+    FROM product_options
     WHERE id = ?    
     `,
     [productOptionId]
@@ -204,11 +210,10 @@ const deleteAllCarts = async (userId) => {
 
 module.exports = {
   getCartsByUserId,
-  getProductOption,
+  getStock,
   checkProductInCart,
-  getProductImages,
-  getProductOptions,
   getDescription,
+  getProductOptions,
   postCart,
   checkIfTheCartExists,
   updateQuantityWhenPostCart,

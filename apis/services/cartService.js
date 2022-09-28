@@ -7,25 +7,12 @@ const getCartsByUserId = async (userId) => {
   return await cart;
 };
 
-const getDetailInCart = async (userId, productId) => {
-  const productInCartArray = await cartDao.checkProductInCart(userId);
-  for (let i = 0; i < productInCartArray.length; i++) {
-    if (productInCartArray[i].productId === parseInt(productId)) {
-      const images = await cartDao.getProductImages(productId);
-      const getProductOptions = await cartDao.getProductOptions(productId);
-      const [getDescrption] = await cartDao.getDescription(productId);
+const getDetailInCart = async (cartId, userId) => {
+  const getDescription = await cartDao.getDescription(cartId, userId);
+  const getProductOptions = await cartDao.getProductOptions(cartId, userId);
 
-      getDescrption.images = images;
-      getDescrption.productOptions = getProductOptions;
-
-      return getDescrption;
-    }
-  }
-
-  const error = new Error('WRONG_INPUT_REQUEST');
-  error.statusCode = 400;
-
-  throw error;
+  const result = [getDescription].concat(getProductOptions);
+  return result;
 };
 
 const postCart = async (productOptionId, quantity, userId) => {
