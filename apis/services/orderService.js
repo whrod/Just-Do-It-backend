@@ -7,20 +7,21 @@ const orderInDetail = async (productOptionId, quantity) => {
   await orderDao.orderInDetail(productOptionId, quantity);
 };
 
+//result.affectRows와 getCartForOrder가 다를 경우 에러 핸들링
 const orderInCart = async (userId) => {
-  const getCartsforOrder = await cartDao.getCartsByUserId(userId);
-  for (let i = 0; i < getCartsforOrder.length; i++) {
-    if (getCartsforOrder[i].stock >= getCartsforOrder[i].quantity) {
+  const getCartsForOrder = await cartDao.getCartsByUserId(userId);
+  for (let i = 0; i < getCartsForOrder.length; i++) {
+    if (getCartsForOrder[i].stock >= getCartsForOrder[i].quantity) {
       const result = await orderDao.orderInCart(userId);
       await cartDao.deleteAllCarts(userId);
       return result;
     }
-    if (getCartsforOrder[i].stock !== getCartsforOrder[i].quantity) {
+    if (getCartsForOrder[i].stock !== getCartsForOrder[i].quantity) {
       const error = new Error(`INVALID QUANTITY OF REQUEST`);
       error.statusCode = 400;
       throw error;
     }
-    if (getCartsforOrder[i].stock === 0) {
+    if (getCartsForOrder[i].stock === 0) {
       const error = new Error('ITEMS_IN_YOUR_CART_ARE_OUT_OF_STOCK');
       error.statusCode = 400;
       throw error;
