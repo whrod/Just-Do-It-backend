@@ -187,6 +187,8 @@ const deleteCart = async (userId, cartId) => {
     `,
     [userId, cartId]
   );
+  await affectedRowsErrorHandler(result);
+  return result;
 };
 
 const deleteAllCarts = async (userId) => {
