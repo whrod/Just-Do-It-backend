@@ -28,7 +28,6 @@ const getDetailInCart = async (userId, productId) => {
   throw error;
 };
 
-//productid와 productOpiontId가 매칭 안될경우 에러핸들링
 const postCart = async (productOptionId, quantity, userId) => {
   const checkIfTheCartExists = await cartDao.checkIfTheCartExists(
     productOptionId,
@@ -51,7 +50,6 @@ const postCart = async (productOptionId, quantity, userId) => {
   }
 };
 
-//productid와 productOpiontId가 매칭 안될경우 에러핸들링
 const updateCart = async (cartId, productOptionId, userId, quantity) => {
   await checkStock(productOptionId, quantity);
 
