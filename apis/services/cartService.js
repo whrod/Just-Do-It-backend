@@ -11,6 +11,12 @@ const getDetailInCart = async (cartId, userId) => {
   const getDescription = await cartDao.getDescription(cartId, userId);
   const getProductOptions = await cartDao.getProductOptions(cartId, userId);
 
+  if (getDescription.productId === null) {
+    const error = new Error('WROND_INPUT_REQUEST');
+    error.statusCode = 400;
+
+    throw error;
+  }
   const result = [getDescription].concat(getProductOptions);
   return result;
 };
