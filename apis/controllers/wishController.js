@@ -11,7 +11,7 @@ const createWish = catchAsync(async (req, res) => {
     throw err;
   }
   await wishService.createWish(productId, userId)
-  return res.status(201).json({ message: "WISH_CREATE_SUCCESS" })
+  return res.status(200).json({ message: "WISH_CREATE_SUCCESS" })
 })
 
 const removeWish = catchAsync(async (req, res) => {

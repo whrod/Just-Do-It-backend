@@ -70,6 +70,7 @@ const checkWishlist = async (productId, userId) => {
     throw error;
   }
 }
+
 module.exports = {
   createWish,
   removeWish,
