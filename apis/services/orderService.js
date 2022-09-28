@@ -1,32 +1,43 @@
-const { orderDao, cartDao } = require('../models');
+const database = require('../models/dataSource');
+const queryRunner = database.createQueryRunner();
+const { orderDao } = require('../models');
 const { checkStock } = require('../utils/checkStock');
 
-const orderInDetail = async (productOptionId, quantity) => {
+const orderInDetail = async (quantity, userId, productOptionId) => {
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+
   await checkStock(productOptionId, quantity);
 
-  await orderDao.orderInDetail(productOptionId, quantity);
+  try {
+    await orderDao.orderInDetail(productOptionId, quantity);
+    await orderDao.deleteCart(userId, productOptionId);
+  } catch (error) {
+    await queryRunner.rollbackTransaction();
+  }
 };
-
-//result.affectRows와 getCartForOrder가 다를 경우 에러 핸들링
-// const orderInCart = async (userId) => {
-//   const getCartsForOrder = await cartDao.getCartsByUserId(userId);
-//   for (let i = 0; i < getCartsForOrder.length; i++) {
-//     if (getCartsForOrder[i].stock >= getCartsForOrder[i].quantity) {
-//       const result = await orderDao.orderInCart(userId);
-//       await cartDao.deleteAllCarts(userId);
-//       return result;
-//     }
-//     if (getCartsForOrder[i].stock === 0) {
-//       const error = new Error('ITEMS_IN_YOUR_CART_ARE_OUT_OF_STOCK');
-//       error.statusCode = 400;
-//       throw error;
-//     }
-//   }
-// };
 
 const orderInCart = async (userId) => {
-  return await orderDao.orderInCart(userId);
+  try {
+    const checkCart = await orderDao.checkCartForOrder(userId);
+
+    let isTrue = 0;
+    for (let i = 0; i < checkCart.length; i++) {
+      if (checkCart[i].stock >= checkCart[i].quantity) {
+        isTrue = true;
+      }
+    }
+    if ((isTrue = true)) {
+      const result = await orderDao.orderInCart(userId);
+      await orderDao.deleteAllCarts(userId);
+      await queryRunner.commitTransaction();
+      return result;
+    }
+  } catch (error) {
+    await queryRunner.rollbackTransaction();
+  }
 };
+
 module.exports = {
   orderInDetail,
   orderInCart,
