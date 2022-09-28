@@ -36,9 +36,9 @@ const checkCartForOrder = async (userId) => {
   const result = await database.query(
     `
     SELECT
-    c.product_option_id AS productOptionId,
-    c.quantity,
-    po.stock
+        c.product_option_id AS productOptionId,
+        c.quantity,
+        po.stock
     FROM carts c
     JOIN product_options po
     ON c.product_option_id = po.id
@@ -53,8 +53,7 @@ const deleteCart = async (userId, productOptionId) => {
   const result = await database.query(
     `
     DELETE
-    FROM
-    carts
+    FROM carts
     WHERE user_id = ? 
     AND
     product_option_id = ?
@@ -68,8 +67,7 @@ const deleteAllCarts = async (userId) => {
   const result = await database.query(
     `
     DELETE
-    FROM
-    carts
+    FROM carts
     WHERE user_id = ?
     `,
     [userId]
