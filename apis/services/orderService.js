@@ -1,7 +1,14 @@
 const { orderDao } = require('../models');
 const { checkStock } = require('../utils/checkStock');
 
-const orderInDetail = async (quantity, userId, productOptionId) => {
+const orderInDetail = async (productOptionId, quantity) => {
+  if (!productOptionId || !quantity) {
+    const error = new Error('KEY_ERROR');
+    error.statusCode = 400;
+
+    throw error;
+  }
+
   await checkStock(productOptionId, quantity);
 
   await orderDao.orderInDetail(productOptionId, quantity);
@@ -18,7 +25,6 @@ const orderInCart = async (userId) => {
       throw error;
     }
   }
-  console.log('SERVOCEEEEE');
   const result = await orderDao.orderInCart(userId);
   return result;
 };

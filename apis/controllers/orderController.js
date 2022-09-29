@@ -4,7 +4,7 @@ const { catchAsync } = require('../utils/error');
 const orderInDetail = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const { productOptionId, quantity } = req.body;
-  await orderService.orderInDetail(quantity, userId, productOptionId);
+  await orderService.orderInDetail(productOptionId, quantity);
 
   res.status(201).send({
     message: `One order was created`,
@@ -15,7 +15,6 @@ const orderInDetail = catchAsync(async (req, res) => {
 
 const orderInCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  console.log('@@@@@@@@@@@');
   const result = await orderService.orderInCart(userId);
 
   res.status(200).send({

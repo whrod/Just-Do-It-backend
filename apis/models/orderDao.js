@@ -71,32 +71,6 @@ const checkCartForOrder = async (userId) => {
   return result;
 };
 
-// const deleteCart = async (userId, productOptionId) => {
-//   const result = await database.query(
-//     `
-//     DELETE
-//     FROM carts
-//     WHERE user_id = ?
-//     AND
-//     product_option_id = ?
-//     `,
-//     [userId, productOptionId]
-//   );
-//   return result;
-// };
-
-// const deleteAllCarts = async (userId) => {
-//   const result = await database.query(
-//     `
-//     DELETE
-//     FROM carts
-//     WHERE user_id = ?
-//     `,
-//     [userId]
-//   );
-//   return result;
-// };
-
 module.exports = {
   orderInDetail,
   orderInCart,
