@@ -28,7 +28,7 @@ const loginRequired = catchAsync(async (req, res, next) => {
 const checkUserId = catchAsync(async (req, res, next) => {
   const accessToken = req.headers.authorization;
   if (!accessToken) {
-    req.isUser = false;
+    req.user = null;
     return next();
   }
 
@@ -36,12 +36,10 @@ const checkUserId = catchAsync(async (req, res, next) => {
   const user = await userService.getUserById(verifyToken.id);
 
   if (!user) {
-    const error = new Error('INVALID_USER');
-    error.statusCode = 400;
-    throw error;
+    req.userId = null;
   }
-  req.isUser = true;
-  req.user = user;
+
+  req.userId = user.id;
   next();
 });
 

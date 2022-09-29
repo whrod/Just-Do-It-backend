@@ -1,6 +1,5 @@
 const database = require('./dataSource');
 
-
 const getProductOptions = async (productId) => {
   try {
     return await database.query(
@@ -21,14 +20,14 @@ const getProductOptions = async (productId) => {
   }
 }
 
-const getDescription = async (productId) => {
+const getProduct = async (productId) => {
   try {
     const getDescription = await database.query(
       `select 
+        p.id AS productId,
         b.name as brandName, 
         p.name AS productName, 
         p.style_code AS styleCode, 
-        p.thumbnail AS thumbnail, 
         p.description AS description,
         p.retail_price AS retailPrice, 
         p.discount_price AS discountPrice, 
@@ -48,7 +47,7 @@ const getDescription = async (productId) => {
   }
 }
 
-const getReview = async (productId) => {
+const getReviewList = async (productId) => {
   try {
     return await database.query(
       `SELECT
@@ -87,14 +86,15 @@ const getStyleCode = async (productId) => {
   }
 }
 
-const getThumbnail = async (getStyleCode) => {
+const getRelatedProducts = async (styleCode) => {
   try {
     return await database.query(
       `SELECT
-      JSON_ARRAYAGG(thumbnail) AS thumbnail
-      FROM products
-      WHERE LEFT(style_code,6) = ?
-      `, [getStyleCode]
+      p.id AS productId,
+      p.thumbnail
+      FROM products p
+      WHERE LEFT(p.style_code,6) = ?
+      `, [styleCode]
     )
   }
   catch (err) {
@@ -106,14 +106,17 @@ const getThumbnail = async (getStyleCode) => {
 
 const isWished = async (productId, userId) => {
   try {
-    return await database.query(
-      `SELECT
-        user_id,
-        product_id
-      FROM wishlist
+    const [result] = await database.query(
+      `SELECT EXISTS(
+        SELECT(
+          id
+          )
+        FROM wishlist
       WHERE product_id = ? AND user_id = ? 
+      )AS isWished
       `, [productId, userId]
     )
+    return result;
   }
   catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
@@ -124,9 +127,9 @@ const isWished = async (productId, userId) => {
 
 module.exports = {
   getProductOptions,
-  getDescription,
-  getReview,
+  getProduct,
+  getReviewList,
   getStyleCode,
-  getThumbnail,
+  getRelatedProducts,
   isWished
 }
