@@ -8,16 +8,26 @@ const getCartsByUserId = async (userId) => {
 };
 
 const getDetailInCart = async (cartId, userId) => {
-  const getDescription = await cartDao.getDescription(cartId, userId);
-  const getProductOptions = await cartDao.getProductOptions(cartId, userId);
+  const productDescription = await cartDao.getDescription(cartId, userId);
 
-  if (getDescription.productId === null) {
-    const error = new Error('WROND_INPUT_REQUEST');
+  if (productDescription.productId === null) {
+    const error = new Error('CART_NOT_FOUND');
+    error.statusCode = 404;
+
+    throw error;
+  }
+
+  const productOptions = await cartDao.getProductOptions(
+    productDescription.productId
+  );
+
+  if (productDescription.productId === null) {
+    const error = new Error('WRONG_INPUT_REQUEST');
     error.statusCode = 400;
 
     throw error;
   }
-  const result = [getDescription].concat(getProductOptions);
+  const result = { ...productDescription, productOptions: productOptions };
   return result;
 };
 
