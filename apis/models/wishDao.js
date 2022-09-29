@@ -26,8 +26,8 @@ const getWishList = async (userId) => {
         u.id AS userId,
         w.id AS wishlistId,
         p.id AS productId
-      FROM products p
-      JOIN wishlist w ON w.product_id = p.id
+      FROM wishlist w
+      JOIN products p ON p.id = w.product_id
       JOIN users u ON u.id = w.user_id
       WHERE w.user_id = ?
     `, [userId]
@@ -41,6 +41,7 @@ const getWishList = async (userId) => {
 
 const removeWish = async (productId, userId) => {
   try {
+
     return await database.query(
       `DELETE
       FROM wishlist
@@ -57,11 +58,10 @@ const removeWish = async (productId, userId) => {
 const checkWishlist = async (productId, userId) => {
   try {
     return await database.query(
-      `SELECT 
-        product_id
-      
-      FROM wishlist
-      WHERE product_id = ? AND user_id = ?
+      `SELECT
+          product_id
+        FROM wishlist
+        WHERE product_id = ? AND user_id = ?
       `, [productId, userId]
     )
   }
@@ -77,4 +77,4 @@ module.exports = {
   removeWish,
   checkWishlist,
   getWishList
-}
+};
