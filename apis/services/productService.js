@@ -1,13 +1,7 @@
 const { productDao } = require('../models');
 
 const getDetail = async (productId, userId) => {
-  //1. product 상세정보
-  /**
-   * - product options
-   * - review
-   * - isWished
-   */
-  //2. 해당상품과 관련된 상품들의 정보 : 썸네일
+  
   const product = await productDao.getProduct(productId)
 
 
