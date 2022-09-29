@@ -21,23 +21,6 @@ const loginRequired = catchAsync(async (req, res, next) => {
   next();
 });
 
-const checkUserId = catchAsync(async (req, res, next) => {
-  const accessToken = req.headers.authorization;
-  if (!accessToken) {
-    req.user = null;
-    return next();
-  }
-
-  const verifyToken = jwt.verify(accessToken, process.env.JWT_SECRET);
-  const user = await userService.getUserById(verifyToken.id);
-
-  if (!user) {
-    req.userId = null;
-  }
-
-  req.user = user;
-  next();
-});
 
 const checkUserId = catchAsync(async (req, res, next) => {
   const accessToken = req.headers.authorization;
