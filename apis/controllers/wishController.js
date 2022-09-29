@@ -9,7 +9,7 @@ const createWish = catchAsync(async (req, res) => {
     error.statusCode = 400;
     throw err;
   }
-  await wishService.createWish(productId)
+  await wishService.createWish(productId, userId)
   return res.status(201).json({ message: "WISH_CREATE_SUCCESS" })
 })
 
@@ -23,7 +23,7 @@ const removeWish = catchAsync(async (req, res) => {
     throw err;
   }
   const result = await wishService.removeWish(productId, userId)
-  return res.status(200).json(result)
+  return res.status(201).json(result)
 })
 
 const postWish = catchAsync(async (req, res) => {
@@ -35,14 +35,9 @@ const postWish = catchAsync(async (req, res) => {
     throw err;
   }
   const result = await wishService.postWish(productId, userId)
+  return res.status(200).json(result)
+})
 
-  return res.status(201).json(result)
-
-
-}
-
-
-)
 module.exports = {
   createWish,
   removeWish,
