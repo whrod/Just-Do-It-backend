@@ -18,6 +18,9 @@ const orderInDetail = async (quantity, userId, productOptionId) => {
 };
 
 const orderInCart = async (userId) => {
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+
   try {
     const checkCart = await orderDao.checkCartForOrder(userId);
 
