@@ -22,7 +22,7 @@ const getProductOptions = async (productId) => {
 
 const getProduct = async (productId) => {
   try {
-    const getDescription = await database.query(
+    return await database.query(
       `select 
         p.id AS productId,
         b.name as brandName, 
@@ -38,7 +38,6 @@ const getProduct = async (productId) => {
       where p.id =?
       `, [productId]
     )
-    return getDescription;
   }
   catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
@@ -112,11 +111,11 @@ const isWished = async (productId, userId) => {
           id
           )
         FROM wishlist
-      WHERE product_id = ? AND user_id = ? 
+      WHERE product_id = ? AND user_id = ?
       )AS isWished
       `, [productId, userId]
     )
-    return result;
+    return +result.isWished
   }
   catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
