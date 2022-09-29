@@ -1,44 +1,26 @@
-const database = require('../models/dataSource');
-const queryRunner = database.createQueryRunner();
 const { orderDao } = require('../models');
 const { checkStock } = require('../utils/checkStock');
 
 const orderInDetail = async (quantity, userId, productOptionId) => {
-  await queryRunner.connect();
-  await queryRunner.startTransaction();
-
   await checkStock(productOptionId, quantity);
 
-  try {
-    await orderDao.orderInDetail(productOptionId, quantity);
-    await orderDao.deleteCart(userId, productOptionId);
-  } catch (error) {
-    await queryRunner.rollbackTransaction();
-  }
+  await orderDao.orderInDetail(productOptionId, quantity);
 };
 
 const orderInCart = async (userId) => {
-  await queryRunner.connect();
-  await queryRunner.startTransaction();
+  const checkCart = await orderDao.checkCartForOrder(userId);
 
-  try {
-    const checkCart = await orderDao.checkCartForOrder(userId);
+  for (let i = 0; i < checkCart.length; i++) {
+    if (checkCart[i].stock <= checkCart[i].quantity) {
+      const error = new Error(`REQUEST_QUANTITY_MORE_THAN_STOCK`);
+      error.statusCode = 400;
 
-    let isTrue = 0;
-    for (let i = 0; i < checkCart.length; i++) {
-      if (checkCart[i].stock >= checkCart[i].quantity) {
-        isTrue = true;
-      }
+      throw error;
     }
-    if ((isTrue = true)) {
-      const result = await orderDao.orderInCart(userId);
-      await orderDao.deleteAllCarts(userId);
-      await queryRunner.commitTransaction();
-      return result;
-    }
-  } catch (error) {
-    await queryRunner.rollbackTransaction();
   }
+  console.log('SERVOCEEEEE');
+  const result = await orderDao.orderInCart(userId);
+  return result;
 };
 
 module.exports = {

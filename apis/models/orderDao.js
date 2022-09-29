@@ -17,19 +17,41 @@ const orderInDetail = async (productOptionId, quantity) => {
 };
 
 const orderInCart = async (userId) => {
-  const result = await database.query(
-    `
-    UPDATE
-        product_options po
-    JOIN carts c
-        ON c.product_option_id = po.id
-    SET
-        po.stock = po.stock - c.quantity
-    WHERE c.user_id = ?
-    `,
-    [userId]
-  );
-  return result.affectedRows;
+  const queryRunner = database.createQueryRunner();
+
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+
+  try {
+    const result1 = await queryRunner.query(
+      `
+      UPDATE
+          product_options po
+      JOIN carts c
+          ON c.product_option_id = po.id
+      SET
+          po.stock = po.stock - c.quantity
+      WHERE c.user_id = ?
+      `,
+      [userId]
+    );
+
+    const result = await queryRunner.query(
+      `
+      DELETE
+      FROM carts
+      WHERE user_id = ?
+      `,
+      [userId]
+    );
+
+    await queryRunner.commitTransaction();
+    await queryRunner.release();
+    return result1.affectedRows;
+  } catch (error) {
+    await queryRunner.rollbackTransaction();
+    await queryRunner.release();
+  }
 };
 
 const checkCartForOrder = async (userId) => {
@@ -49,36 +71,34 @@ const checkCartForOrder = async (userId) => {
   return result;
 };
 
-const deleteCart = async (userId, productOptionId) => {
-  const result = await database.query(
-    `
-    DELETE
-    FROM carts
-    WHERE user_id = ? 
-    AND
-    product_option_id = ?
-    `,
-    [userId, productOptionId]
-  );
-  return result;
-};
+// const deleteCart = async (userId, productOptionId) => {
+//   const result = await database.query(
+//     `
+//     DELETE
+//     FROM carts
+//     WHERE user_id = ?
+//     AND
+//     product_option_id = ?
+//     `,
+//     [userId, productOptionId]
+//   );
+//   return result;
+// };
 
-const deleteAllCarts = async (userId) => {
-  const result = await database.query(
-    `
-    DELETE
-    FROM carts
-    WHERE user_id = ?
-    `,
-    [userId]
-  );
-  return result;
-};
+// const deleteAllCarts = async (userId) => {
+//   const result = await database.query(
+//     `
+//     DELETE
+//     FROM carts
+//     WHERE user_id = ?
+//     `,
+//     [userId]
+//   );
+//   return result;
+// };
 
 module.exports = {
   orderInDetail,
   orderInCart,
   checkCartForOrder,
-  deleteCart,
-  deleteAllCarts,
 };

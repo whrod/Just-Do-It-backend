@@ -15,7 +15,7 @@ const orderInDetail = catchAsync(async (req, res) => {
 
 const orderInCart = catchAsync(async (req, res) => {
   const userId = req.user.id;
-
+  console.log('@@@@@@@@@@@');
   const result = await orderService.orderInCart(userId);
 
   res.status(200).send({
