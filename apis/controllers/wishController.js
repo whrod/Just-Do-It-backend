@@ -31,7 +31,6 @@ const removeWish = catchAsync(async (req, res) => {
 })
 
 
-
 module.exports = {
   createWish,
   getWishList,
