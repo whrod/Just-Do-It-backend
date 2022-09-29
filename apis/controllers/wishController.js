@@ -24,7 +24,7 @@ const getWishList = catchAsync(async (req, res) => {
 
 const removeWish = catchAsync(async (req, res) => {
   const userId = req.user.id
-  const { productId } = req.params;
+  const { productId } = req.query;
 
   const result = await wishService.removeWish(productId, userId)
   return res.status(200).json(result)
