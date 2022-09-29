@@ -9,6 +9,13 @@ const getCartsByUserId = async (userId) => {
 };
 
 const postCart = async (productOptionId, quantity, userId) => {
+  if (!productOptionId || !quantity) {
+    const error = new Error('KEY_ERROR');
+    error.statusCode = 400;
+
+    throw error;
+  }
+
   const checkIfTheCartExists = await cartDao.checkIfTheCartExists(
     productOptionId,
     userId
@@ -31,6 +38,13 @@ const postCart = async (productOptionId, quantity, userId) => {
 };
 
 const updateCart = async (cartId, productOptionId, userId, quantity) => {
+  if (!productOptionId || !quantity) {
+    const error = new Error('KEY_ERROR');
+    error.statusCode = 400;
+
+    throw error;
+  }
+
   await checkStock(productOptionId, quantity);
 
   return await cartDao.updateCart(productOptionId, userId, quantity, cartId);
