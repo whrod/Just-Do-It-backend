@@ -2,15 +2,13 @@ const { productService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
 
-const getDetail = catchAsync(async (req, res) => {
-  const { productId } = req.body;
-  if (!productId) {
-    const err = new Error('KEY_ERROR');
-    error.statusCode = 400;
-    throw err;
-  }
-  const result = await productService.getDetail(productId);
-  return res.status(201).json(result)
+const getDetail = catchAsync(async (req, res, next) => {
+  const { productId } = req.params;
+  const userId = req.userId;
+
+
+  const result = await productService.getDetail(productId, userId)
+  return res.status(200).json(result)
 })
 
 
@@ -34,6 +32,7 @@ const getProducts = catchAsync(async (req, res) => {
   );
   res.status(200).send({ list: products });
 });
+
 
 module.exports = {
   getProducts,

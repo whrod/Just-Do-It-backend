@@ -1,27 +1,8 @@
 const database = require('./dataSource');
 
-const getImage = async (productId) => {
-  try {
-    const images = await database.query(
-      `SELECT
-      product_id,
-      image_url AS imageUrl
-      FROM product_images
-      WHERE product_id = ?
-      `, [productId]
-    )
-    return images;
-  }
-  catch (err) {
-    const error = new Error(`INVALID_DATA_INPUT`);
-    error.statusCode = 500;
-    throw error;
-  }
-}
-
 const getProductOptions = async (productId) => {
   try {
-    const data = await database.query(
+    return await database.query(
       `SELECT 
         po.id AS productOptionId,
         s.foot_size AS size,
@@ -31,7 +12,6 @@ const getProductOptions = async (productId) => {
       WHERE po.product_id = ?
       `, [productId]
     );
-    return data;
   }
   catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
@@ -40,26 +20,24 @@ const getProductOptions = async (productId) => {
   }
 }
 
-const getDescription = async (productId) => {
+const getProduct = async (productId) => {
   try {
-    const getDescription = await database.query(
-      `SELECT
-      b.name AS brandName,
-      p.name AS productName,
-      p.style_code AS styleCode,
-      p.thumbnail AS thumbnail,
-      p.description,
-      p.retail_price AS retailPrice,
-      p.discount_price AS discountPrice,
-      c.color AS color
-      FROM products p
-      JOIN product_options po ON po.product_id = p.id
-      JOIN colors c ON c.id = po.color_id
-      JOIN brands b ON b.id = p.brand_id
-      WHERE p.id = ?
+    return await database.query(
+      `select 
+        p.id AS productId,
+        b.name as brandName, 
+        p.name AS productName, 
+        p.style_code AS styleCode, 
+        p.description AS description,
+        p.retail_price AS retailPrice, 
+        p.discount_price AS discountPrice, 
+        JSON_ARRAYAGG(pi.image_url) AS imageURL
+      FROM products as p  
+      JOIN product_images pi ON pi.product_id = p.id 
+      JOIN brands b ON b.id = p.brand_id 
+      where p.id =?
       `, [productId]
     )
-    return getDescription;
   }
   catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
@@ -68,14 +46,17 @@ const getDescription = async (productId) => {
   }
 }
 
-const getReview = async (productId) => {
+const getReviewList = async (productId) => {
   try {
     return await database.query(
       `SELECT
-      r.content,
-      star_score AS starScore
+        r.content,
+        r.star_score AS starScore,
+        r.created_at AS createdAt,
+        u.fullname AS fullName
       FROM reviews r
       JOIN products p ON p.id = r.product_id
+      JOIN users u ON u.id = r.user_id
       WHERE r.product_id = ? 
       `, [productId]
     )
@@ -91,7 +72,7 @@ const getStyleCode = async (productId) => {
   try {
     return await database.query(
       `SELECT
-      style_code
+        style_code
       FROM products
       WHERE products.id = ?
       `, [productId]
@@ -104,14 +85,15 @@ const getStyleCode = async (productId) => {
   }
 }
 
-const getThumbnail = async (styleCodeFront) => {
+const getRelatedProducts = async (styleCode) => {
   try {
     return await database.query(
       `SELECT
-      thumbnail
-      FROM products
-      WHERE LEFT(style_code,6) = ?
-      `, [styleCodeFront]
+      p.id AS productId,
+      p.thumbnail
+      FROM products p
+      WHERE LEFT(p.style_code,6) = ?
+      `, [styleCode]
     )
   }
   catch (err) {
@@ -121,7 +103,26 @@ const getThumbnail = async (styleCodeFront) => {
   }
 }
 
-
+const isWished = async (productId, userId) => {
+  try {
+    const [result] = await database.query(
+      `SELECT EXISTS(
+        SELECT(
+          id
+          )
+        FROM wishlist
+      WHERE product_id = ? AND user_id = ?
+      )AS isWished
+      `, [productId, userId]
+    )
+    return +result.isWished
+  }
+  catch (err) {
+    const error = new Error(`INVALID_DATA_INPUT`);
+    error.statusCode = 500;
+    throw error;
+  }
+}
 const getProducts = async (sort, color, brand, size, limit, offset) => {
   let statementWhere = 'WHERE po.stock != 0';
 
@@ -179,11 +180,10 @@ const getProducts = async (sort, color, brand, size, limit, offset) => {
 
 module.exports = {
   getProducts,
-  getImage,
   getProductOptions,
-  getDescription,
-  getReview,
+  getProduct,
+  getReviewList,
   getStyleCode,
-  getThumbnail
-};
-
+  getRelatedProducts,
+  isWished
+}
