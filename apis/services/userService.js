@@ -1,9 +1,10 @@
 const { userDao } = require('../models');
-const bcyrpt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
 const signUp = async (userName, password, fullName, phoneNumber, address, birth, gender) => {
+
   const today = new Date();
   const todayTime = today.getTime();
   const birthTime = new Date(birth);
@@ -49,8 +50,9 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
     err.statusCode = 400;
     throw err
   }
+
   const makeHash = async (password, saltRound) => {
-    return await bcyrpt.hash(password, saltRound);
+    return await bcrypt.hash(password, saltRound);
   }
   password = await makeHash(password, 10);
 
@@ -59,8 +61,8 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
 }
 
 
-const signIn = async (userName, password) => {
-  const user = await userDao.getUserByUsername(userName);
+const signIn = async (username, password) => {
+  const user = await userDao.getUserByUsername(username);
 
   if (user === undefined) {
     const error = new Error('INVALID_USER');
@@ -74,15 +76,14 @@ const signIn = async (userName, password) => {
   if (!passwordMatch) {
     const error = new Error('INVALID_USER');
     error.statusCode = 400;
+
     throw error;
   }
 
-  return (accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-
+  const accessToken = await jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
     algorithm: process.env.ALGORITHM,
     expiresIn: process.env.JWT_EXPIRES_IN,
-
-  }));
+  });
 };
 
 const getUserById = async (id) => {
