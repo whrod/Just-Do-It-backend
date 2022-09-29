@@ -8,20 +8,37 @@ const getCartsByUserId = async (userId) => {
 };
 
 const getDetailInCart = async (cartId, userId) => {
-  const getDescription = await cartDao.getDescription(cartId, userId);
-  const getProductOptions = await cartDao.getProductOptions(cartId, userId);
+  const productDescription = await cartDao.getDescription(cartId, userId);
 
-  if (getDescription.productId === null) {
-    const error = new Error('WROND_INPUT_REQUEST');
+  if (productDescription.productId === null) {
+    const error = new Error('CART_NOT_FOUND');
+    error.statusCode = 404;
+
+    throw error;
+  }
+
+  const productOptions = await cartDao.getProductOptions(
+    productDescription.productId
+  );
+
+  if (productDescription.productId === null) {
+    const error = new Error('WRONG_INPUT_REQUEST');
     error.statusCode = 400;
 
     throw error;
   }
-  const result = [getDescription].concat(getProductOptions);
+  const result = { ...productDescription, productOptions: productOptions };
   return result;
 };
 
 const postCart = async (productOptionId, quantity, userId) => {
+  if (!productOptionId || !quantity) {
+    const error = new Error('KEY_ERROR');
+    error.statusCode = 400;
+
+    throw error;
+  }
+
   const checkIfTheCartExists = await cartDao.checkIfTheCartExists(
     productOptionId,
     userId
@@ -44,6 +61,13 @@ const postCart = async (productOptionId, quantity, userId) => {
 };
 
 const updateCart = async (cartId, productOptionId, userId, quantity) => {
+  if (!productOptionId || !quantity) {
+    const error = new Error('KEY_ERROR');
+    error.statusCode = 400;
+
+    throw error;
+  }
+
   await checkStock(productOptionId, quantity);
 
   return await cartDao.updateCart(productOptionId, userId, quantity, cartId);

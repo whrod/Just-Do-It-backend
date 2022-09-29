@@ -32,22 +32,7 @@ const getCartsByUserId = async (userId) => {
   return cart;
 };
 
-const checkProductInCart = async (userId) => {
-  const result = await database.query(
-    `
-    SELECT
-        po.product_id AS productId
-    FROM product_options po
-    JOIN carts c
-    ON po.id = c.product_option_id
-    WHERE c.user_id = ?
-    `,
-    [userId]
-  );
-  return result;
-};
-
-const getProductOptions = async (cartId, userId) => {
+const getProductOptions = async (productId) => {
   const result = await database.query(
     `
     SELECT
@@ -59,17 +44,9 @@ const getProductOptions = async (cartId, userId) => {
     ON p.id = po.product_id
     JOIN sizes s
     ON s.id = po.size_id
-    WHERE p.id IN
-    (SELECT p.id
-    FROM products p
-    JOIN product_options po
-    ON po.product_id = p.id
-    JOIN carts c
-    ON c.product_option_id = po.id
-    WHERE c.id = ?
-    AND c.user_id = ?)
+    WHERE p.id = ?
     `,
-    [cartId, userId]
+    [productId]
   );
   return result;
 };
@@ -210,7 +187,6 @@ const deleteAllCarts = async (userId) => {
 module.exports = {
   getCartsByUserId,
   getStock,
-  checkProductInCart,
   getDescription,
   getProductOptions,
   postCart,
