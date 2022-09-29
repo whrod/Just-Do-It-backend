@@ -7,6 +7,30 @@ const getCartsByUserId = async (userId) => {
   return await cart;
 };
 
+const getDetailInCart = async (cartId, userId) => {
+  const productDescription = await cartDao.getDescription(cartId, userId);
+
+  if (productDescription.productId === null) {
+    const error = new Error('CART_NOT_FOUND');
+    error.statusCode = 404;
+
+    throw error;
+  }
+
+  const productOptions = await cartDao.getProductOptions(
+    productDescription.productId
+  );
+
+  if (productDescription.productId === null) {
+    const error = new Error('WRONG_INPUT_REQUEST');
+    error.statusCode = 400;
+
+    throw error;
+  }
+  const result = { ...productDescription, productOptions: productOptions };
+  return result;
+};
+
 const postCart = async (productOptionId, quantity, userId) => {
   if (!productOptionId || !quantity) {
     const error = new Error('KEY_ERROR');
@@ -59,6 +83,7 @@ const deleteAllCarts = async (userId) => {
 
 module.exports = {
   getCartsByUserId,
+  getDetailInCart,
   postCart,
   updateCart,
   deleteCart,

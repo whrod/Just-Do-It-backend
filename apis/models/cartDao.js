@@ -32,12 +32,58 @@ const getCartsByUserId = async (userId) => {
   return cart;
 };
 
+const getProductOptions = async (productId) => {
+  const result = await database.query(
+    `
+    SELECT
+        po.id AS productOptionId,
+        s.foot_size AS size,
+	      stock
+    FROM product_options po
+    LEFT JOIN products p
+    ON p.id = po.product_id
+    JOIN sizes s
+    ON s.id = po.size_id
+    WHERE p.id = ?
+    `,
+    [productId]
+  );
+  return result;
+};
+
+const getDescription = async (cartId, userId) => {
+  const [result] = await database.query(
+    `
+    SELECT
+        p.id AS productId,
+        p.brand_id AS brandId,
+        b.name AS brandName,
+        JSON_ARRAYAGG(image_url) AS images
+    FROM products p
+    JOIN brands b
+    ON b.id = p.brand_id
+    JOIN product_images pi
+    ON p.id = pi.product_id
+    JOIN product_options po
+    ON po.product_id = p.id
+    JOIN carts c
+    ON c.product_option_id = po.id
+    WHERE c.id = ?
+    AND c.user_id = ?
+    `,
+    [cartId, userId]
+  );
+  return result;
+};
+
+
+
 const getStock = async (productOptionId) => {
   const [productOption] = await database.query(
     `
     SELECT
         stock
-    FROM product_options   
+    FROM product_options
     WHERE id = ?    
     `,
     [productOptionId]
@@ -142,6 +188,8 @@ const deleteAllCarts = async (userId) => {
 module.exports = {
   getCartsByUserId,
   getStock,
+  getDescription,
+  getProductOptions,
   postCart,
   checkIfTheCartExists,
   updateQuantityWhenPostCart,
