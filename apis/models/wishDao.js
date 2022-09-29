@@ -16,16 +16,18 @@ const createWish = async (productId, userId) => {
   }
 }
 
-const showWish = async (userId) => {
+const getWishList = async (userId) => {
   try {
     return await database.query(
       `SELECT
-      p.thumbnail AS thumbnail,
-      p.name AS name,
-      IFNULL(p.discount_price, p.retail_price) AS price,
-      u.id AS userId
-      FROM products p
-      JOIN wishlist w ON w.product_id = p.id
+        p.thumbnail AS thumbnail,
+        p.name AS name,
+        IFNULL(p.discount_price, p.retail_price) AS price,
+        u.id AS userId,
+        w.id AS wishlistId,
+        p.id AS productId
+      FROM wishlist w
+      JOIN products p ON p.id = w.product_id
       JOIN users u ON u.id = w.user_id
       WHERE w.user_id = ?
     `, [userId]
@@ -37,16 +39,17 @@ const showWish = async (userId) => {
   }
 }
 
-const removeWish = async (productId) => {
+const removeWish = async (productId, userId) => {
   try {
+
     return await database.query(
       `DELETE
       FROM wishlist
-      WHERE product_id = ? 
-  `, [productId]
+      WHERE product_id = ? AND user_id = ?
+  `, [productId, userId]
     )
   } catch (err) {
-    const error = new Error('INVALID_DATA_INPUT(removeWish)');
+    const error = new Error('INVALID_DATA_INPUT');
     error.statusCode = 500;
     throw error;
   }
@@ -56,9 +59,9 @@ const checkWishlist = async (productId, userId) => {
   try {
     return await database.query(
       `SELECT
-      product_id
-      FROM wishlist
-      WHERE product_id = ? AND user_id = ?
+          product_id
+        FROM wishlist
+        WHERE product_id = ? AND user_id = ?
       `, [productId, userId]
     )
   }
@@ -68,9 +71,10 @@ const checkWishlist = async (productId, userId) => {
     throw error;
   }
 }
+
 module.exports = {
   createWish,
   removeWish,
   checkWishlist,
-  showWish
-}
+  getWishList
+};
