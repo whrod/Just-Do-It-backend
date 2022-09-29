@@ -30,6 +30,7 @@ const signUp = catchAsync(async (req, res) => {
 });
 
 const signIn = catchAsync(async (req, res) => {
+
   const { userName, password } = req.body;
   if (!userName || !password) {
     const error = new Error('KEY_ERROR');

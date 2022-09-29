@@ -84,8 +84,6 @@ const signIn = async (username, password) => {
     algorithm: process.env.ALGORITHM,
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
-
-  return await [user.fullName, accessToken];
 };
 
 const getUserById = async (id) => {
