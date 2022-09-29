@@ -8,8 +8,6 @@ const createWish = async (productId, userId) => {
     throw err;
   }
   await wishDao.createWish(productId, userId)
-  const getWishList = await wishDao.getWishList(userId)
-  return getWishList
 }
 
 const removeWish = async (productId, userId) => {
@@ -19,19 +17,13 @@ const removeWish = async (productId, userId) => {
     err.statusCode = 400;
     throw err;
   }
-  await wishDao.removeWish(productId)
-  const getWishList = await wishDao.getWishList(userId)
-  if (!getWishList[0]) {
-    return (`WISHLIST_IS_EMPTY`)
-  }
-  return getWishList
+
+  await wishDao.removeWish(productId, userId)
+  return await wishDao.getWishList(userId)
 }
 
 const getWishList = async (userId) => {
   const getWishList = await wishDao.getWishList(userId)
-  if (!getWishList[0]) {
-    return (`WISHLIST_IS_EMPTY`)
-  }
   return getWishList
 }
 
@@ -40,4 +32,4 @@ module.exports = {
   createWish,
   removeWish,
   getWishList
-}
+}p

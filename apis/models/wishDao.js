@@ -20,12 +20,12 @@ const getWishList = async (userId) => {
   try {
     return await database.query(
       `SELECT
-      p.thumbnail AS thumbnail,
-      p.name AS name,
-      IFNULL(p.discount_price, p.retail_price) AS price,
-      u.id AS userId,
-      w.id AS wishlistId,
-      p.id AS productId
+        p.thumbnail AS thumbnail,
+        p.name AS name,
+        IFNULL(p.discount_price, p.retail_price) AS price,
+        u.id AS userId,
+        w.id AS wishlistId,
+        p.id AS productId
       FROM products p
       JOIN wishlist w ON w.product_id = p.id
       JOIN users u ON u.id = w.user_id
@@ -39,13 +39,13 @@ const getWishList = async (userId) => {
   }
 }
 
-const removeWish = async (productId) => {
+const removeWish = async (productId, userId) => {
   try {
     return await database.query(
       `DELETE
       FROM wishlist
-      WHERE product_id = ? 
-  `, [productId]
+      WHERE product_id = ? AND user_id = ?
+  `, [productId, userId]
     )
   } catch (err) {
     const error = new Error('INVALID_DATA_INPUT');
@@ -57,8 +57,9 @@ const removeWish = async (productId) => {
 const checkWishlist = async (productId, userId) => {
   try {
     return await database.query(
-      `SELECT
-      product_id
+      `SELECT 
+        product_id
+      
       FROM wishlist
       WHERE product_id = ? AND user_id = ?
       `, [productId, userId]
