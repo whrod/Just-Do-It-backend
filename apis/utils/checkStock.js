@@ -11,7 +11,7 @@ const checkStock = async (productOptionId, quantity) => {
   }
 
   if (productOption.stock < quantity) {
-    const error = new Error('CART_QUANTITY_MORE_THAN_STOCK');
+    const error = new Error('REQUEST_QUANTITY_MORE_THAN_STOCK');
     error.statusCode = 400;
 
     throw error;
