@@ -1,5 +1,4 @@
 const { cartDao } = require('../models');
-const { checkIfTheCartExists } = require('../models/cartDao');
 const { checkStock } = require('../utils/checkStock');
 
 const getCartsByUserId = async (userId) => {
