@@ -32,7 +32,7 @@ const getCartsByUserId = async (userId) => {
   return cart;
 };
 
-const getProductOption = async (productOptionId) => {
+const getStock = async (productOptionId) => {
   const [productOption] = await database.query(
     `
     SELECT
@@ -141,7 +141,7 @@ const deleteAllCarts = async (userId) => {
 
 module.exports = {
   getCartsByUserId,
-  getProductOption,
+  getStock,
   postCart,
   checkIfTheCartExists,
   updateQuantityWhenPostCart,
