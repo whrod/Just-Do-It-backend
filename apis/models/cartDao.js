@@ -103,7 +103,6 @@ const getStock = async (productOptionId) => {
   const [productOption] = await database.query(
     `
     SELECT
-        product_id
         stock
     FROM product_options
     WHERE id = ?    
