@@ -4,6 +4,7 @@ const { catchAsync } = require('./error');
 
 const loginRequired = catchAsync(async (req, res, next) => {
   const accessToken = req.headers.authorization;
+
   if (!accessToken) {
     const error = new Error('NEED_ACCESSTOKEN');
     error.statusCode = 401;
@@ -24,6 +25,7 @@ const loginRequired = catchAsync(async (req, res, next) => {
 
 const checkUserId = catchAsync(async (req, res, next) => {
   const accessToken = req.headers.authorization;
+
   if (!accessToken) {
     req.user = null;
     return next();

@@ -19,6 +19,26 @@ const getProductOptions = async (productId) => {
     throw error;
   }
 }
+const getColor = async (productId) => {
+  try {
+    const [data] = await database.query(
+      `select 
+      distinct
+       c.color AS color
+      FROM colors c
+      JOIN product_options po ON po.color_id = c.id
+      JOIN products p ON p.id = po.product_id
+      where p.id =?
+      `, [productId]
+    )
+    return data.color
+  }
+  catch (err) {
+    const error = new Error(`INVALID_DATA_INPUT`);
+    error.statusCode = 500;
+    throw error;
+  }
+}
 
 const getProduct = async (productId) => {
   try {
@@ -34,7 +54,7 @@ const getProduct = async (productId) => {
         JSON_ARRAYAGG(pi.image_url) AS imageURL
       FROM products as p  
       JOIN product_images pi ON pi.product_id = p.id 
-      JOIN brands b ON b.id = p.brand_id 
+      JOIN brands b ON b.id = p.brand_id
       where p.id =?
       `, [productId]
     )
@@ -105,6 +125,7 @@ const getRelatedProducts = async (styleCode) => {
 
 const isWished = async (productId, userId) => {
   try {
+    userId = parseInt(userId)
     const [result] = await database.query(
       `SELECT EXISTS(
         SELECT(
@@ -115,6 +136,7 @@ const isWished = async (productId, userId) => {
       )AS isWished
       `, [productId, userId]
     )
+
     return +result.isWished
   }
   catch (err) {
@@ -185,5 +207,7 @@ module.exports = {
   getReviewList,
   getStyleCode,
   getRelatedProducts,
-  isWished
+  isWished,
+  getColor
 }
+

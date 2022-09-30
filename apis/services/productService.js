@@ -14,11 +14,13 @@ const getDetail = async (productId, userId) => {
   const isWished = Boolean(await productDao.isWished(productId, userId))
   const styleCode = product.styleCode.substring(0, 6)
   const relatedProducts = await productDao.getRelatedProducts(styleCode)
+  const getColor = await productDao.getColor(productId)
 
   product.relatedProducts = relatedProducts;
   product.productOptions = productOptions;
   product.review = productReview;
   product.isWished = isWished;
+  product.color = getColor;
 
   return product;
 }

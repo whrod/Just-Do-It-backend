@@ -41,7 +41,6 @@ const getWishList = async (userId) => {
 
 const removeWish = async (productId, userId) => {
   try {
-
     return await database.query(
       `DELETE
       FROM wishlist
