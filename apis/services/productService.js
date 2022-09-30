@@ -1,26 +1,28 @@
 const { productDao } = require('../models');
 
-const getDetail = async (productId) => {
-  const [getStyleCode] = await productDao.getStyleCode(productId);
-  const styleCodeFront = getStyleCode.style_code.substring(0, 6)
-  if (!getStyleCode) {
-    const err = new Error("product is not exist");
+const getDetail = async (productId, userId) => {
+
+  const [product] = await productDao.getProduct(productId)
+  if (!product) {
+    const err = new Error("product is not exists");
     err.statusCode = 404;
     throw err
   }
 
-  const getThumbnail = await productDao.getThumbnail(styleCodeFront)
-  const getImage = await productDao.getImage(productId)
-  const [getDescription] = await productDao.getDescription(productId)
-  const getProductOptions = await productDao.getProductOptions(productId)
-  const [getReview] = await productDao.getReview(productId)
+  const productOptions = await productDao.getProductOptions(productId)
+  const productReview = await productDao.getReviewList(productId);
+  const isWished = Boolean(await productDao.isWished(productId, userId))
+  const styleCode = product.styleCode.substring(0, 6)
+  const relatedProducts = await productDao.getRelatedProducts(styleCode)
+  const getColor = await productDao.getColor(productId)
 
-  getDescription.getThumbnail = getThumbnail;
-  getDescription.imageUrl = getImage;
-  getDescription.productOptions = getProductOptions;
-  getDescription.review = getReview;
+  product.relatedProducts = relatedProducts;
+  product.productOptions = productOptions;
+  product.review = productReview;
+  product.isWished = isWished;
+  product.color = getColor;
 
-  return getDescription;
+  return product;
 }
 
 

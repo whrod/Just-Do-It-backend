@@ -61,8 +61,8 @@ const signUp = async (userName, password, fullName, phoneNumber, address, birth,
 }
 
 
-const signIn = async (username, password) => {
-  const user = await userDao.getUserByUsername(username);
+const signIn = async (userName, password) => {
+  const user = await userDao.getUserByUsername(userName);
 
   if (user === undefined) {
     const error = new Error('INVALID_USER');
@@ -71,7 +71,7 @@ const signIn = async (username, password) => {
     throw error;
   }
 
-  const passwordMatch = await bcyrpt.compare(password, user.password);
+  const passwordMatch = await bcrypt.compare(password, user.password);
 
   if (!passwordMatch) {
     const error = new Error('INVALID_USER');
@@ -84,6 +84,9 @@ const signIn = async (username, password) => {
     algorithm: process.env.ALGORITHM,
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
+
+  return [user.fullName, accessToken]
+
 };
 
 const getUserById = async (id) => {

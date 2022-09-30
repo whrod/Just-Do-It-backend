@@ -10,7 +10,6 @@ const globalErrorHandler = (error, req, res, next) => {
   res.status(error.statusCode).json({ message: error.message });
 };
 
-//1이 아닐경우 고려
 const affectedRowsErrorHandler = async (result) => {
   if (result.affectedRows !== 1) {
     const error = new Error('WRONG_INPUT_REQUEST');
