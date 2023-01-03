@@ -8,7 +8,6 @@ const database = new DataSource({
   password: process.env.TYPEORM_PASSWORD,
   database: process.env.TYPEORM_DATABASE,
 });
-
 database
   .initialize()
   .then(() => {
