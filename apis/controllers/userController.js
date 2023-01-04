@@ -4,6 +4,7 @@ const { catchAsync } = require('../utils/error');
 const signUp = catchAsync(async (req, res) => {
   const { userName, password, fullName, phoneNumber, address, birth, gender } =
     req.body;
+  console.log(req.body);
   if (
     !userName ||
     !password ||
@@ -30,7 +31,6 @@ const signUp = catchAsync(async (req, res) => {
 });
 
 const signIn = catchAsync(async (req, res) => {
-
   const { userName, password } = req.body;
   if (!userName || !password) {
     const error = new Error('KEY_ERROR');
@@ -50,4 +50,3 @@ module.exports = {
   signUp,
   signIn,
 };
-

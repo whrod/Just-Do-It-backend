@@ -4,6 +4,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const options = {
   swaggerDefinition: {
     info: {
+      openapi: '3.0.0',
       title: 'JustDoIt API',
       version: '1.0.0',
       description: 'just-do-it-project API',
@@ -11,7 +12,7 @@ const options = {
     host: 'localhost:8000',
     basePath: '/',
   },
-  apis: ['../routes/index.js', './swagger/*'],
+  apis: ['apis/routes/*.js'],
 };
 const specs = swaggerJsdoc(options);
 
