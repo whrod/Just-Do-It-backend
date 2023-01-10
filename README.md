@@ -65,8 +65,8 @@ Back-End : Node.js, Express, JSON WEB TOKEN, Bcrypt, Mysql, AWS(RDS)<br>
 
 
 # 프로젝트 종료 후 개인작업 진행중
-- [ ] 이미지 클라우드 S3로 이전
+- [X] 이미지 클라우드 S3로 이전
   - [ ] 이미지 URL DB 수정   
-- [ ] Docker 컨테이너 활용 EC2 배포   
+- [X] Docker 컨테이너 활용 EC2 배포   
 - [ ] Swagger API 문서화 작업   
 - [ ] 소셜 로그인 
