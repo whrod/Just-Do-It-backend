@@ -1,4 +1,4 @@
-# 37-1st-Just-Do-It-backend
+#Just-Do-It-backend
 
 1. 팀 소개
 Just Do It - nike.co.kr clone project    
