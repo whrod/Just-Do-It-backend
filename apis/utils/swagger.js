@@ -9,8 +9,22 @@ const options = {
       version: '1.0.0',
       description: 'just-do-it-project API',
     },
+    persistAuthorization: true,
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          description: 'JWT Authorization',
+          type: 'http',
+          scheme: 'bearer',
+          in: 'header',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: {
+      bearerAuth: [],
+    },
     host: 'localhost:8000',
-    basePath: '/',
   },
   apis: ['apis/routes/*.js'],
 };

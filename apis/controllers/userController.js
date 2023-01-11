@@ -4,7 +4,6 @@ const { catchAsync } = require('../utils/error');
 const signUp = catchAsync(async (req, res) => {
   const { userName, password, fullName, phoneNumber, address, birth, gender } =
     req.body;
-  console.log(req.body);
   if (
     !userName ||
     !password ||
