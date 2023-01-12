@@ -1,20 +1,19 @@
 const { productDao } = require('../models');
 
 const getDetail = async (productId, userId) => {
-
-  const [product] = await productDao.getProduct(productId)
+  const [product] = await productDao.getProduct(productId);
   if (!product) {
-    const err = new Error("product is not exists");
+    const err = new Error('product is not exists');
     err.statusCode = 404;
-    throw err
+    throw err;
   }
 
-  const productOptions = await productDao.getProductOptions(productId)
+  const productOptions = await productDao.getProductOptions(productId);
   const productReview = await productDao.getReviewList(productId);
-  const isWished = Boolean(await productDao.isWished(productId, userId))
-  const styleCode = product.styleCode.substring(0, 6)
-  const relatedProducts = await productDao.getRelatedProducts(styleCode)
-  const getColor = await productDao.getColor(productId)
+  const isWished = Boolean(await productDao.isWished(productId, userId));
+  const styleCode = product.styleCode.substring(0, 6);
+  const relatedProducts = await productDao.getRelatedProducts(styleCode);
+  const getColor = await productDao.getColor(productId);
 
   product.relatedProducts = relatedProducts;
   product.productOptions = productOptions;
@@ -23,8 +22,7 @@ const getDetail = async (productId, userId) => {
   product.color = getColor;
 
   return product;
-}
-
+};
 
 const getProducts = async (sort, color, brand, size, limit, offset) => {
   return await productDao.getProducts(sort, color, brand, size, limit, offset);
@@ -32,5 +30,5 @@ const getProducts = async (sort, color, brand, size, limit, offset) => {
 
 module.exports = {
   getProducts,
-  getDetail
+  getDetail,
 };

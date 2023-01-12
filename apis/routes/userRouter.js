@@ -1,11 +1,12 @@
 const userRouter = require('express').Router();
 const { userController } = require('../controllers');
 
+//TODO: 정규표현식 숨기기
 /**
  * @swagger
  * /users/signup:
  *   post:
- *     summary: Create a new user
+ *     summary: Create A New User
  *     description: Create a new user
  *     tags:
  *       - User
@@ -51,6 +52,10 @@ const { userController } = require('../controllers');
  *     responses:
  *       201:
  *         description: Create a new user successfully
+ *       400:
+ *         description: Bad request.
+ *       5XX:
+ *         description: Unexpected error.
  */
 userRouter.post('/signup', userController.signUp);
 
@@ -58,8 +63,8 @@ userRouter.post('/signup', userController.signUp);
  * @swagger
  * /users/signin:
  *   post:
- *     summary: Login & Authorization
- *     description: Login
+ *     summary: Login
+ *     description: Login & JWT token issue
  *     tags:
  *       - User
  *     produces:
@@ -79,20 +84,18 @@ userRouter.post('/signup', userController.signUp);
  *               pattern: '[a-zA-Z0-9_-]$'
  *               minLength: 6
  *               maxLength: 99
+ *               example: dockertest1
  *             password:
  *               type: string
  *               pattern: '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
+ *               example: qwe123qwe###
  *     responses:
  *       201:
- *         description: Login Success
- * components:
- *  securitySchemes:
- *    bearerAuth:
- *      type: http
- *      scheme: bearer
- *      bearerFormat: JWT
- * security:
- * - bearerAuth: []
+ *         description: Login successfully
+ *       400:
+ *         description: Bad request.
+ *       5XX:
+ *         description: Unexpected error.
  */
 userRouter.post('/signin', userController.signIn);
 

@@ -4,14 +4,13 @@ const { catchAsync } = require('./error');
 
 const loginRequired = catchAsync(async (req, res, next) => {
   const accessToken = req.headers.authorization;
-  console.log("1111111111111")
 
   if (!accessToken) {
     const error = new Error('NEED_ACCESSTOKEN');
     error.statusCode = 401;
     throw error;
   }
-  console.log(accessToken)
+  console.log(accessToken);
   const verifyToken = jwt.verify(accessToken, process.env.JWT_SECRET);
   const user = await userService.getUserById(verifyToken.id);
 
@@ -23,7 +22,6 @@ const loginRequired = catchAsync(async (req, res, next) => {
   req.user = user;
   next();
 });
-
 
 const checkUserId = catchAsync(async (req, res, next) => {
   const accessToken = req.headers.authorization;
@@ -46,5 +44,5 @@ const checkUserId = catchAsync(async (req, res, next) => {
 
 module.exports = {
   loginRequired,
-  checkUserId
+  checkUserId,
 };

@@ -4,12 +4,11 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const options = {
   swaggerDefinition: {
     info: {
-      openapi: '3.0.0',
+      openapi: '3.0.1',
       title: 'JustDoIt API',
       version: '1.0.0',
       description: 'just-do-it-project API',
     },
-    persistAuthorization: true,
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -24,6 +23,7 @@ const options = {
     security: {
       bearerAuth: [],
     },
+    persistAuthorization: true,
     host: 'localhost:8000',
   },
   apis: ['apis/routes/*.js'],

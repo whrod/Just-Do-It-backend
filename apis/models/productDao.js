@@ -10,15 +10,15 @@ const getProductOptions = async (productId) => {
       FROM product_options po
       JOIN sizes s ON s.id = po.size_id
       WHERE po.product_id = ?
-      `, [productId]
+      `,
+      [productId]
     );
-  }
-  catch (err) {
+  } catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
     error.statusCode = 500;
     throw error;
   }
-}
+};
 const getColor = async (productId) => {
   try {
     const [data] = await database.query(
@@ -29,16 +29,16 @@ const getColor = async (productId) => {
       JOIN product_options po ON po.color_id = c.id
       JOIN products p ON p.id = po.product_id
       where p.id =?
-      `, [productId]
-    )
-    return data.color
-  }
-  catch (err) {
+      `,
+      [productId]
+    );
+    return data.color;
+  } catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
     error.statusCode = 500;
     throw error;
   }
-}
+};
 
 const getProduct = async (productId) => {
   try {
@@ -56,15 +56,15 @@ const getProduct = async (productId) => {
       JOIN product_images pi ON pi.product_id = p.id 
       JOIN brands b ON b.id = p.brand_id
       where p.id =?
-      `, [productId]
-    )
-  }
-  catch (err) {
+      `,
+      [productId]
+    );
+  } catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
     error.statusCode = 500;
     throw error;
   }
-}
+};
 
 const getReviewList = async (productId) => {
   try {
@@ -78,15 +78,15 @@ const getReviewList = async (productId) => {
       JOIN products p ON p.id = r.product_id
       JOIN users u ON u.id = r.user_id
       WHERE r.product_id = ? 
-      `, [productId]
-    )
-  }
-  catch (err) {
+      `,
+      [productId]
+    );
+  } catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
     error.statusCode = 500;
     throw error;
   }
-}
+};
 
 const getStyleCode = async (productId) => {
   try {
@@ -95,15 +95,15 @@ const getStyleCode = async (productId) => {
         style_code
       FROM products
       WHERE products.id = ?
-      `, [productId]
-    )
-  }
-  catch (err) {
+      `,
+      [productId]
+    );
+  } catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
     error.statusCode = 500;
     throw error;
   }
-}
+};
 
 const getRelatedProducts = async (styleCode) => {
   try {
@@ -113,19 +113,19 @@ const getRelatedProducts = async (styleCode) => {
       p.thumbnail
       FROM products p
       WHERE LEFT(p.style_code,6) = ?
-      `, [styleCode]
-    )
-  }
-  catch (err) {
+      `,
+      [styleCode]
+    );
+  } catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
     error.statusCode = 500;
     throw error;
   }
-}
+};
 
 const isWished = async (productId, userId) => {
   try {
-    userId = parseInt(userId)
+    userId = parseInt(userId);
     const [result] = await database.query(
       `SELECT EXISTS(
         SELECT(
@@ -134,17 +134,17 @@ const isWished = async (productId, userId) => {
         FROM wishlist
       WHERE product_id = ? AND user_id = ?
       )AS isWished
-      `, [productId, userId]
-    )
+      `,
+      [productId, userId]
+    );
 
-    return +result.isWished
-  }
-  catch (err) {
+    return +result.isWished;
+  } catch (err) {
     const error = new Error(`INVALID_DATA_INPUT`);
     error.statusCode = 500;
     throw error;
   }
-}
+};
 const getProducts = async (sort, color, brand, size, limit, offset) => {
   let statementWhere = 'WHERE po.stock != 0';
 
@@ -208,6 +208,5 @@ module.exports = {
   getStyleCode,
   getRelatedProducts,
   isWished,
-  getColor
-}
-
+  getColor,
+};
