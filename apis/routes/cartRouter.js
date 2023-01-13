@@ -2,6 +2,7 @@ const cartRouter = require('express').Router();
 const { cartController } = require('../controllers');
 const { loginRequired } = require('../utils/auth');
 
+//TODO: 컴포넌트 사용, 모듈화
 /**
  * @swagger
  * /cart:
@@ -53,8 +54,8 @@ cartRouter.get('/:cartId', loginRequired, cartController.getDetailInCart);
  * @swagger
  * /cart:
  *   post:
- *     summary: Add product to cart
- *     description: Create cart with product option ID and quantity<br>
+ *     summary: Add Product To Cart
+ *     description: Create cart with productOptionId and quantity<br>
  *                  Please authorize for API testing
  *     tags:
  *       - Cart
@@ -73,14 +74,14 @@ cartRouter.get('/:cartId', loginRequired, cartController.getDetailInCart);
  *               productOptionId:
  *                 type: integer
  *                 minimum: 1
- *                 maximum: 196
+ *                 maximum: 456
  *               quantity:
  *                 type: integer
  *                 minimum: 1
  *                 default: 1
  *     responses:
  *       201:
- *         description: Login successfully
+ *         description: Successfully added an item to your shopping cart.
  *       400:
  *         description: Bad request.
  *       5XX:
@@ -93,7 +94,7 @@ cartRouter.post('/', loginRequired, cartController.postCart);
  * /cart/{cartId}:
  *   patch:
  *     summary: Change the product options in your cart
- *     description: Change cart with product option ID and quantity<br>
+ *     description: Change cart with productOptionId and quantity<br>
  *                  Please authorize for API testing
  *     tags:
  *       - Cart
@@ -117,14 +118,14 @@ cartRouter.post('/', loginRequired, cartController.postCart);
  *               productOptionId:
  *                 type: integer
  *                 minimum: 1
- *                 maximum: 196
+ *                 maximum: 456
  *               quantity:
  *                 type: integer
  *                 minimum: 1
  *                 default: 1
  *     responses:
  *       201:
- *         description: Login successfully
+ *         description: Successfully change cart items
  *       400:
  *         description: Bad request.
  *       5XX:
@@ -150,7 +151,7 @@ cartRouter.patch('/:cartId', loginRequired, cartController.updateCart);
  *         type: integer
  *     responses:
  *       200:
- *         description: Successfully load cart page.
+ *         description: Successfully delete cart items
  *       400:
  *         description: Bad request.
  *       5XX:
@@ -171,7 +172,7 @@ cartRouter.delete('/:cartId', loginRequired, cartController.deleteCart);
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Successfully load cart page.
+ *         description: Successfully delete cart items
  *       400:
  *         description: Bad request.
  *       5XX:
