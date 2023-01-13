@@ -2,7 +2,7 @@ const productRouter = require('express').Router();
 const { productController } = require('../controllers');
 const { loginRequired } = require('../utils/auth');
 
-//TODO: Enum, Array component, description 수정
+//TODO: 컴포넌트 사용, 모듈화
 /**
  * @swagger
  * /product:
