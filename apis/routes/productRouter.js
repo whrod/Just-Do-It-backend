@@ -2,7 +2,7 @@ const productRouter = require('express').Router();
 const { productController } = require('../controllers');
 const { checkUserId } = require('../utils/auth');
 
-//TODO: Enum, Array component
+//TODO: Enum, Array component, description 수정
 /**
  * @swagger
  * /product:
@@ -28,9 +28,10 @@ const { checkUserId } = require('../utils/auth');
  *       - name: sort
  *         in: query
  *         required : false
- *         type: string
- *         default: releaseDate desc
- *         enum: [discountRate desc, price asc, price desc, releaseDate desc]
+ *         schema:
+ *           type: string
+ *           enum: [discountRate desc, price asc, price desc, releaseDate desc]
+ *           default: releaseDate desc
  *       - name: size
  *         in: query
  *         schema:
@@ -106,6 +107,8 @@ productRouter.get('', productController.getProducts);
  *     description: Selected product detail information & Related products
  *     tags:
  *       - Product
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: productId
  *         in: path
@@ -113,13 +116,6 @@ productRouter.get('', productController.getProducts);
  *         type: integer
  *         minimum: 1
  *         maximum: 19
- *       - name: Authorization
- *         in: header
- *         required: true
- *         security:
- *         - bearerAuth: []
- *         description: Enter the JWT TOKEN you received after logging in.
- *         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImlhdCI6MTY3MzUyNTM2OCwiZXhwIjoxNjc0MzAyOTY4fQ.7BkIntXVKR9ds2NYVcuiIhEhwxQWXvnm4t5ZA66P28E
  *     responses:
  *       200:
  *         description: Successfully load product detail page.

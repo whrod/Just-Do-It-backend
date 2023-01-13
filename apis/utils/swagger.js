@@ -3,8 +3,8 @@ const swaggerJsdoc = require('swagger-jsdoc');
 
 const options = {
   swaggerDefinition: {
+    openapi: '3.0.1',
     info: {
-      openapi: '3.0.1',
       title: 'JustDoIt API',
       version: '1.0.0',
       description: 'just-do-it-project API',
