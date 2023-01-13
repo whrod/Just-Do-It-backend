@@ -1,7 +1,7 @@
 const userRouter = require('express').Router();
 const { userController } = require('../controllers');
 
-//TODO: 정규표현식 숨기기
+//TODO: 정규표현식 숨기기, 패스워드 관련 정규표현식 확인
 /**
  * @swagger
  * /users/signup:

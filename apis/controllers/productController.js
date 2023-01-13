@@ -1,16 +1,13 @@
 const { productService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
-
 const getDetail = catchAsync(async (req, res, next) => {
   const { productId } = req.params;
-  const userId = req.userId;
+  const userId = req.user.id;
 
-
-  const result = await productService.getDetail(productId, userId)
-  return res.status(200).json(result)
-})
-
+  const result = await productService.getDetail(productId, userId);
+  return res.status(200).json(result);
+});
 
 const getProducts = catchAsync(async (req, res) => {
   const { sort, size, color, brand, limit, offset } = req.query;
@@ -33,9 +30,7 @@ const getProducts = catchAsync(async (req, res) => {
   res.status(200).send({ list: products });
 });
 
-
 module.exports = {
   getProducts,
-  getDetail
+  getDetail,
 };
-

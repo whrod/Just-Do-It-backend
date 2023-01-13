@@ -1,6 +1,6 @@
 const productRouter = require('express').Router();
 const { productController } = require('../controllers');
-const { checkUserId } = require('../utils/auth');
+const { checkUserId, loginRequired } = require('../utils/auth');
 
 //TODO: Enum, Array component, description 수정
 /**
@@ -124,6 +124,6 @@ productRouter.get('', productController.getProducts);
  *       5XX:
  *         description: Unexpected error.
  */
-productRouter.get('/:productId', checkUserId, productController.getDetail);
+productRouter.get('/:productId', loginRequired, productController.getDetail);
 
 module.exports = productRouter;
