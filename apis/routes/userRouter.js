@@ -1,10 +1,10 @@
 const userRouter = require('express').Router();
 const { userController } = require('../controllers');
 
-//TODO: 정규표현식 숨기기, 패스워드 관련 정규표현식 확인
+//TODO: 정규표현식 숨기기, 패스워드 관련 정규표현식 확인, birth 데이트 수정
 /**
  * @swagger
- * /users/signup:
+ * /user/signup:
  *   post:
  *     summary: Create A New User
  *     description: Create a new user
@@ -59,7 +59,7 @@ userRouter.post('/signup', userController.signUp);
 
 /**
  * @swagger
- * /users/signin:
+ * /user/signin:
  *   post:
  *     summary: Login
  *     description: Login & JWT token issue

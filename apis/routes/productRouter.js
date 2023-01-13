@@ -1,6 +1,6 @@
 const productRouter = require('express').Router();
 const { productController } = require('../controllers');
-const { checkUserId, loginRequired } = require('../utils/auth');
+const { loginRequired } = require('../utils/auth');
 
 //TODO: Enum, Array component, description 수정
 /**
