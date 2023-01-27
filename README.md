@@ -60,5 +60,7 @@ Back-End : Node.js, Express, JSON WEB TOKEN, Bcrypt, Mysql, AWS(RDS)<br>
 - [X] 이미지 클라우드 S3로 이전
   - [ ] 이미지 URL DB 수정   
 - [X] Docker 컨테이너 활용 EC2 배포   
-- [ ] Swagger API 문서화 작업   
+- [X] Swagger API 문서화 작업
+  - http://3.36.93.92:8000/api-docs/
+  - [ ] 모듈화 작업
 - [ ] 소셜 로그인 
