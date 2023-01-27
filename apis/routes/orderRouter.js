@@ -14,30 +14,21 @@ const { loginRequired } = require('../utils/auth');
  *     security:
  *       - bearerAuth: []
  *     requestBody:
- *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - productOptionId
- *               - quantity
- *             properties:
- *               productOptionId:
- *                 type: integer
- *                 minimum: 1
- *                 maximum: 456
- *               quantity:
- *                 type: integer
- *                 minimum: 1
- *                 default: 1
+ *             $ref : '#components/requestBodies/ProductOptionsAndQuantity'
  *     responses:
  *       201:
  *         description: Successfully ordered an item.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CartOrProductStatusChange'
  *       400:
- *         description: Bad request.
+ *         $ref: '#components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#components/responses/5XX'
  */
 orderRouter.patch('/', loginRequired, orderController.orderInDetail);
 
@@ -55,10 +46,14 @@ orderRouter.patch('/', loginRequired, orderController.orderInDetail);
  *     responses:
  *       201:
  *         description: Successfully ordered all items in cart.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/OrderCartsResult'
  *       400:
- *         description: Bad request.
+ *         $ref: '#components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#components/responses/5XX'
  */
 orderRouter.patch('/cart', loginRequired, orderController.orderInCart);
 

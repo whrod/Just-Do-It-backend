@@ -3,6 +3,7 @@ const { cartController } = require('../controllers');
 const { loginRequired } = require('../utils/auth');
 
 //TODO: 컴포넌트 사용, 모듈화
+
 /**
  * @swagger
  * /cart:
@@ -17,10 +18,14 @@ const { loginRequired } = require('../utils/auth');
  *     responses:
  *       200:
  *         description: Successfully load cart page.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CartExample'
  *       400:
- *         description: Bad request.
+ *         $ref: '#/components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#/components/responses/5XX'
  */
 cartRouter.get('/', loginRequired, cartController.getCarts);
 
@@ -36,17 +41,18 @@ cartRouter.get('/', loginRequired, cartController.getCarts);
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - name: cartId
- *         in: path
- *         required: true
- *         type: integer
+ *       - $ref : '#/components/parameters/cartId'
  *     responses:
  *       200:
- *         description: Successfully load cart page.
+ *         description: Successfully load one cart about detail page.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/OneCartDetailForChangingOption'
  *       400:
- *         description: Bad request.
+ *         $ref: '#/components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#/components/responses/5XX'
  */
 cartRouter.get('/:cartId', loginRequired, cartController.getDetailInCart);
 
@@ -62,30 +68,21 @@ cartRouter.get('/:cartId', loginRequired, cartController.getDetailInCart);
  *     security:
  *       - bearerAuth: []
  *     requestBody:
- *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - productOptionId
- *               - quantity
- *             properties:
- *               productOptionId:
- *                 type: integer
- *                 minimum: 1
- *                 maximum: 456
- *               quantity:
- *                 type: integer
- *                 minimum: 1
- *                 default: 1
+ *             $ref : '#components/requestBodies/ProductOptionsAndQuantity'
  *     responses:
  *       201:
  *         description: Successfully added an item to your shopping cart.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CartOrProductStatusChange'
  *       400:
- *         description: Bad request.
+ *         $ref: '#components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#components/responses/5XX'
  */
 cartRouter.post('/', loginRequired, cartController.postCart);
 
@@ -101,35 +98,23 @@ cartRouter.post('/', loginRequired, cartController.postCart);
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - name: cartId
- *         in: path
- *         required: true
- *         type: integer
+ *       - $ref : '#/components/parameters/cartId'
  *     requestBody:
- *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - productOptionId
- *               - quantity
- *             properties:
- *               productOptionId:
- *                 type: integer
- *                 minimum: 1
- *                 maximum: 456
- *               quantity:
- *                 type: integer
- *                 minimum: 1
- *                 default: 1
+ *             $ref : '#components/requestBodies/ProductOptionsAndQuantity'
  *     responses:
  *       201:
- *         description: Successfully change cart items
+ *         description: Successfully change cart
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CartOrProductStatusChange'
  *       400:
- *         description: Bad request.
+ *         $ref: '#components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#components/responses/5XX'
  */
 cartRouter.patch('/:cartId', loginRequired, cartController.updateCart);
 
@@ -145,17 +130,18 @@ cartRouter.patch('/:cartId', loginRequired, cartController.updateCart);
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - name: cartId
- *         in: path
- *         required: true
- *         type: integer
+ *       - $ref : '#/components/parameters/cartId'
  *     responses:
- *       200:
- *         description: Successfully delete cart items
+ *       201:
+ *         description: Successfully delete a item in cart.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CartOrProductStatusChange'
  *       400:
- *         description: Bad request.
+ *         $ref: '#components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#components/responses/5XX'
  */
 cartRouter.delete('/:cartId', loginRequired, cartController.deleteCart);
 
@@ -171,12 +157,16 @@ cartRouter.delete('/:cartId', loginRequired, cartController.deleteCart);
  *     security:
  *       - bearerAuth: []
  *     responses:
- *       200:
- *         description: Successfully delete cart items
+ *       201:
+ *         description: Successfully delete all cart.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CartClearedResult'
  *       400:
- *         description: Bad request.
+ *         $ref: '#components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#components/responses/5XX'
  */
 cartRouter.delete('/', loginRequired, cartController.deleteAllCarts);
 

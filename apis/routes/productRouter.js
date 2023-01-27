@@ -12,86 +12,19 @@ const { loginRequired } = require('../utils/auth');
  *     tags:
  *       - Product
  *     parameters:
- *       - name: offset
- *         in: query
- *         required: true
- *         type: integer
- *         default: 0
- *         minimum: 0
- *       - name: limit
- *         in: query
- *         required: true
- *         type: integer
- *         default: 20
- *         minimum: 1
- *         maximum: 20
- *       - name: sort
- *         in: query
- *         required : false
- *         schema:
- *           type: string
- *           enum: [discountRate desc, price asc, price desc, releaseDate desc]
- *           default: releaseDate desc
- *       - name: size
- *         in: query
- *         schema:
- *           type: array
- *           items:
- *             type: integer
- *         collectionFormat: multi
- *         value:
- *         - 220
- *         - 225
- *         - 230
- *         - 240
- *         - 245
- *         - 250
- *         - 255
- *         - 260
- *         - 265
- *         - 270
- *         - 275
- *         - 280
- *         - 285
- *         - 290
- *         - 295
- *         - 300
- *         - 305
- *         - 310
- *       - name: color
- *         in: query
- *         schema:
- *           type: array
- *           items:
- *             type: integer
- *         collectionFormat: multi
- *         value:
- *         - 1
- *         - 2
- *         - 3
- *         - 4
- *         - 5
- *         - 6
- *         - 7
- *         - 8
- *         - 9
- *         - 10
- *         - 11
- *         - 12
- *       - name: brand
- *         in: query
- *         schema:
- *           type: array
- *           items:
- *             type: integer
- *         collectionFormat: multi
- *         value:
- *           - 1
- *           - 2
- *           - 3
+ *       - $ref: '#/components/parameters/Offset'
+ *       - $ref: '#/components/parameters/Limit'
+ *       - $ref: '#/components/parameters/Sort'
+ *       - $ref: '#/components/parameters/Size'
+ *       - $ref: '#/components/parameters/Color'
+ *       - $ref: '#/components/parameters/Brand'
  *     responses:
  *       200:
  *         description: Product list page loaded successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/productList'
  *       400:
  *         description: Bad request.
  *       5XX:
@@ -110,15 +43,14 @@ productRouter.get('', productController.getProducts);
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - name: productId
- *         in: path
- *         required: true
- *         type: integer
- *         minimum: 1
- *         maximum: 19
+ *       - $ref : '#/components/parameters/productId'
  *     responses:
  *       200:
  *         description: Successfully load product detail page.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ProductDetail'
  *       400:
  *         description: Bad request.
  *       5XX:
