@@ -7,7 +7,8 @@ const { userController } = require('../controllers');
  * /user/signup:
  *   post:
  *     summary: Create A New User
- *     description: Create a new user
+ *     description:
+ *
  *     tags:
  *       - User
  *     requestBody:
