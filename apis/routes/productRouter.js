@@ -26,9 +26,9 @@ const { loginRequired } = require('../utils/auth');
  *             schema:
  *               $ref: '#/components/schemas/productList'
  *       400:
- *         description: Bad request.
+ *         $ref: '#/components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#/components/responses/5XX'
  */
 productRouter.get('', productController.getProducts);
 
@@ -52,9 +52,9 @@ productRouter.get('', productController.getProducts);
  *             schema:
  *               $ref: '#/components/schemas/ProductDetail'
  *       400:
- *         description: Bad request.
+ *         $ref: '#/components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#/components/responses/5XX'
  */
 productRouter.get('/:productId', loginRequired, productController.getDetail);
 

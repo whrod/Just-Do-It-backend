@@ -259,6 +259,24 @@
  *           type: string
  *           description: Color of the product
  *
+ *     SignInResult:
+ *       type: object
+ *       properties:
+ *         fullName:
+ *           type: string
+ *           description: Username
+ *         accessToken:
+ *           type: string
+ *           description: JWT Token
+ *
+ *     SignUpResult:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           description: Message about the user being created
+ *           example: "userCreated"
+ *
  *   requestBodies:
  *     ProductOptionsAndQuantity:
  *       type: object
@@ -274,6 +292,57 @@
  *           type: integer
  *           minimum: 1
  *           default: 1
+ *
+ *     SignUp:
+ *       type: object
+ *       required:
+ *         - userName
+ *         - password
+ *         - fullName
+ *         - phoneNumber
+ *         - address
+ *         - birth
+ *         - gender
+ *       properties:
+ *         userName:
+ *           type: string
+ *           pattern: '[a-zA-Z0-9_-]$'
+ *           minLength: 6
+ *           maxLength: 99
+ *         password:
+ *           type: string
+ *           pattern: '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
+ *         fullName:
+ *           type: string
+ *         phoneNumber:
+ *           type: string
+ *           pattern: '^[0-9]{2,3}[0-9]{3,4}[0-9]{4}'
+ *         address:
+ *           type: string
+ *         birth:
+ *           type: string
+ *           format: date
+ *           description: Only 15 years of age or older can register as a member
+ *         gender:
+ *           type: integer
+ *           minimum: 0
+ *           maximum: 1
+ *     SignIn:
+ *       type: object
+ *       required:
+ *         - userName
+ *         - password
+ *       properties:
+ *         userName:
+ *           type: string
+ *           pattern: '[a-zA-Z0-9_-]$'
+ *           minLength: 6
+ *           maxLength: 99
+ *           example: dockertest1
+ *         password:
+ *           type: string
+ *           pattern: '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
+ *           example: qwe123qwe###
  *
  *   responses:
  *     400:

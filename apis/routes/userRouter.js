@@ -7,54 +7,25 @@ const { userController } = require('../controllers');
  * /user/signup:
  *   post:
  *     summary: Create A New User
- *     description:
- *
+ *     description: Member registration process
  *     tags:
  *       - User
  *     requestBody:
- *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - userName
- *               - password
- *               - fullName
- *               - phoneNumber
- *               - address
- *               - birth
- *               - gender
- *             properties:
- *               userName:
- *                 type: string
- *                 pattern: '[a-zA-Z0-9_-]$'
- *                 minLength: 6
- *                 maxLength: 99
- *               password:
- *                 type: string
- *                 pattern: '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
- *               fullName:
- *                 type: string
- *               phoneNumber:
- *                 type: string
- *                 pattern: '^[0-9]{2,3}[0-9]{3,4}[0-9]{4}'
- *               address:
- *                 type: string
- *               birth:
- *                 type: string
- *                 format: date
- *               gender:
- *                 type: integer
- *                 minimum: 0
- *                 maximum: 1
+ *             $ref : '#components/requestBodies/SignUp'
  *     responses:
  *       201:
  *         description: Create a new user successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SignUpResult'
  *       400:
- *         description: Bad request.
+ *         $ref: '#components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#components/responses/5XX'
  */
 userRouter.post('/signup', userController.signUp);
 
@@ -71,28 +42,18 @@ userRouter.post('/signup', userController.signUp);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - userName
- *               - password
- *             properties:
- *               userName:
- *                 type: string
- *                 pattern: '[a-zA-Z0-9_-]$'
- *                 minLength: 6
- *                 maxLength: 99
- *                 example: dockertest1
- *               password:
- *                 type: string
- *                 pattern: '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
- *                 example: qwe123qwe###
+ *             $ref : '#/components/requestBodies/SignIn'
  *     responses:
  *       201:
  *         description: Login successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SignInResult'
  *       400:
- *         description: Bad request.
+ *         $ref: '#components/responses/400'
  *       5XX:
- *         description: Unexpected error.
+ *         $ref: '#components/responses/5XX'
  */
 userRouter.post('/signin', userController.signIn);
 

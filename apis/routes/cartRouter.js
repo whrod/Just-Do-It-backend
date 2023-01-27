@@ -2,8 +2,6 @@ const cartRouter = require('express').Router();
 const { cartController } = require('../controllers');
 const { loginRequired } = require('../utils/auth');
 
-//TODO: 컴포넌트 사용, 모듈화
-
 /**
  * @swagger
  * /cart:
