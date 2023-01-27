@@ -62,5 +62,4 @@ Back-End : Node.js, Express, JSON WEB TOKEN, Bcrypt, Mysql, AWS(RDS)<br>
 - [X] Docker 컨테이너 활용 EC2 배포   
 - [X] Swagger API 문서화 작업
   - http://3.36.93.92:8000/api-docs/
-  - [ ] 모듈화 작업
 - [ ] 소셜 로그인 
