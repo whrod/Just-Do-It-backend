@@ -275,7 +275,43 @@
  *         message:
  *           type: string
  *           description: Message about the user being created
- *           example: "userCreated"
+ *           example: userCreated
+ *
+ *     WishListStatusChange:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           description: Message about the product added to wishlist
+ *           example: WISH_CREATE_SUCCESS || delete complete
+ *
+ *     Wishlist:
+ *       type: object
+ *       properties:
+ *         thumbnail:
+ *           type: string
+ *           description: URL of product image
+ *           example: https://raw.githubusercontent.com/whrod/1stprojectImages/main/921826-101_1.jpg
+ *         name:
+ *           type: string
+ *           description: Name of the product
+ *           example: 나이키 에어맥스 97
+ *         price:
+ *           type: string
+ *           description: Price of the product
+ *           example: 179100
+ *         userId:
+ *           type: integer
+ *           description: User id of the product
+ *           example: 16
+ *         wishlistId:
+ *           type: integer
+ *           description: Wishlist id of the product
+ *           example: 29
+ *         productId:
+ *           type: integer
+ *           description: Product id of the product
+ *           example: 1
  *
  *   requestBodies:
  *     ProductOptionsAndQuantity:
@@ -327,6 +363,7 @@
  *           type: integer
  *           minimum: 0
  *           maximum: 1
+ *
  *     SignIn:
  *       type: object
  *       required:
@@ -343,6 +380,17 @@
  *           type: string
  *           pattern: '^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
  *           example: qwe123qwe###
+ *
+ *     AddWishList:
+ *       type: object
+ *       required:
+ *         - productId
+ *       properties:
+ *         productId:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 19
+ *           default: 1
  *
  *   responses:
  *     400:

@@ -18,18 +18,14 @@ const { loginRequired } = require('../utils/auth');
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - productId
- *             properties:
- *               productId:
- *                 type: integer
- *                 minimum: 1
- *                 maximum: 19
- *                 default: 1
+ *             $ref : '#components/requestBodies/AddWishList'
  *     responses:
  *       201:
- *         description:  Successfully added an item to your wishlist.
+ *         description: Successfully added an item to your wishlist.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/WishListStatusChange'
  *       400:
  *         description: Bad request.
  *       5XX:
@@ -51,6 +47,10 @@ router.post('', loginRequired, wishController.createWish);
  *     responses:
  *       200:
  *         description: Successfully load wishlist page.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Wishlist'
  *       400:
  *         description: Bad request.
  *       5XX:
@@ -76,7 +76,11 @@ router.get('', loginRequired, wishController.getWishList);
  *         type: integer
  *     responses:
  *       200:
- *         description: Successfully delete cart items
+ *         description: Successfully delete product in wishlist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/WishListStatusChange'
  *       400:
  *         description: Bad request.
  *       5XX:
