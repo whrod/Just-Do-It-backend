@@ -2,7 +2,6 @@ const productRouter = require('express').Router();
 const { productController } = require('../controllers');
 const { loginRequired } = require('../utils/auth');
 
-//TODO: 컴포넌트 사용, 모듈화
 /**
  * @swagger
  * /product:
